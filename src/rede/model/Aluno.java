@@ -35,5 +35,10 @@ public class Aluno {
     public void setListaDisciplinas(ArrayList<Disciplina> listaDisciplinas) {
         this.listaDisciplinas = listaDisciplinas;
     }
+
+    @Override
+    public String toString() {
+        return getNome() + ", " + getMatricula();
+    }
 }
 

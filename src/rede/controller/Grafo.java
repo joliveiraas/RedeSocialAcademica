@@ -89,6 +89,29 @@ public class Grafo {
         }
     }
 
+    /*public void imprimirRede() {
+        Graph g = new Graph("Rede Social Acadêmica");
+
+        // Adiciona os nós
+        ArrayList<Node> nos = new ArrayList<>();
+        for (Aluno aluno : listaAlunos) {
+            Node n = new Node(aluno.getNome());
+            g.addNode(n);
+            nos.add(n);
+        }
+
+        // Cria as conexões
+        for (int i = 0; i < listaAlunos.size(); i++) {
+            for (int j = i + 1; j < listaAlunos.size(); j++) {
+                if (matrizAdj[i][j] > 0) {
+                    g.addEdge(nos.get(i), nos.get(j), String.valueOf(matrizAdj[i][j]));
+                }
+            }
+        }
+
+        g.display();
+    }*/
+
     public ArrayList<Aluno> getListaAlunos() {
         return listaAlunos;
     }
