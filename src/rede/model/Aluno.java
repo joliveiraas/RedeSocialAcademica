@@ -6,10 +6,9 @@ public class Aluno {
     private String matricula;
     private List<Disciplina> listaDisciplinas;
 
-    public Aluno(String nome, String matricula, List<Disciplina> listaDisciplinas){
+    public Aluno(String nome, String matricula){
         this.nome = nome;
         this.matricula = matricula;
-        this.listaDisciplinas = listaDisciplinas;
     }
 
     public String getNome() {
