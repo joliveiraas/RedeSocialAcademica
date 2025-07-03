@@ -140,5 +140,10 @@ public class Main {
         rede.imprimirMatriz();
 
         DrawGraph.showGraph(rede.getListaAlunos(), rede.getMatrizAdj());
+
+        Aluno a1 = rede.buscarAlunoNome("Harry Potter");
+        Aluno a2 = rede.buscarAlunoMatricula("2023004");
+        System.out.println(a1.getMatricula() + " :" + a1.getNome());
+        System.out.println(a2.getMatricula() + " :" + a2.getNome());
     }
 }
