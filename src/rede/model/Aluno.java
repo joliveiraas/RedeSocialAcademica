@@ -4,9 +4,9 @@ import java.util.List;
 public class Aluno {
     private String nome;
     private String matricula;
-    private List<String> listaDisciplinas;
+    private List<Disciplina> listaDisciplinas;
 
-    public Aluno(String nome, String matricula, List<String> listaDisciplinas){
+    public Aluno(String nome, String matricula, List<Disciplina> listaDisciplinas){
         this.nome = nome;
         this.matricula = matricula;
         this.listaDisciplinas = listaDisciplinas;
@@ -28,11 +28,11 @@ public class Aluno {
         this.matricula = matricula;
     }
 
-    public List<String> getListaDisciplinas() {
+    public List<Disciplina> getListaDisciplinas() {
         return listaDisciplinas;
     }
 
-    public void setListaDisciplinas(List<String> listaDisciplinas) {
+    public void setListaDisciplinas(List<Disciplina> listaDisciplinas) {
         this.listaDisciplinas = listaDisciplinas;
     }
 }
