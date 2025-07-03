@@ -1,4 +1,5 @@
 package rede.controller;
+import rede.model.Aluno;
 import java.util.List;
 
 public class Grafo {
