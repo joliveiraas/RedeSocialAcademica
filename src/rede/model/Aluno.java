@@ -6,9 +6,10 @@ public class Aluno {
     private String matricula;
     private List<Disciplina> listaDisciplinas;
 
-    public Aluno(String nome, String matricula){
+    public Aluno(String nome, String matricula, List<Disciplina> listaDisciplinas){
         this.nome = nome;
         this.matricula = matricula;
+        this.listaDisciplinas = listaDisciplinas;
     }
 
     public String getNome() {
@@ -33,11 +34,6 @@ public class Aluno {
 
     public void setListaDisciplinas(List<Disciplina> listaDisciplinas) {
         this.listaDisciplinas = listaDisciplinas;
-    }
-
-    @Override
-    public String toString() {
-        return getNome() + ", " + getMatricula();
     }
 }
 
