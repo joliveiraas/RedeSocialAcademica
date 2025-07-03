@@ -23,6 +23,7 @@ public class Grafo {
     public void addAluno(String nome, String matricula){
         Aluno novoAluno = new Aluno(nome, matricula);
         getListaAlunos().add(novoAluno);
+        redimensionarMatriz();
     }
 
     public void addDisciplina(String matricula, String nomeDisciplina, String codigo){
@@ -31,6 +32,60 @@ public class Grafo {
             if(a.getMatricula().equals(matricula)){
                 a.getListaDisciplinas().add(novaDisciplina);
             }
+        }
+    }
+
+    private void redimensionarMatriz(){
+        int tamanho = getListaAlunos().size();
+        int [][] novaMatriz = new int[tamanho][tamanho];
+
+        for (int i = 0; i < tamanho - 1; i++) {
+            for (int j = 0; j < tamanho - 1; j++) {
+                novaMatriz[i][j] = getMatrizAdj()[i][j];
+            }
+        }
+        setMatrizAdj(novaMatriz);
+    }
+
+    public void criarRede(){ //Deve ser criada a partir de disciplinas iguais logo vai ser automatico
+
+        for(int i = 0; i < getListaAlunos().size(); i++){
+            for(int j = i + 1; j < getListaAlunos().size(); j++){
+                Aluno a1 = getListaAlunos().get(i);
+                Aluno a2 = getListaAlunos().get(j);
+                int peso = contarDisciplinas(a1, a2);
+                getMatrizAdj()[i][j] = peso;
+                getMatrizAdj()[j][i] = peso; //N direcionado
+            }
+        }
+    }
+
+    private int contarDisciplinas(Aluno a1, Aluno a2){
+        int contador = 0;
+
+        for(Disciplina d1 : a1.getListaDisciplinas()){
+            for(Disciplina d2 : a2.getListaDisciplinas()){
+                if(d1.getCodigo().equals(d2.getCodigo())){ //Comparando os códigos...
+                    contador++;
+                }
+            }
+        }
+        return contador;
+    }
+
+    public void imprimirMatriz(){
+        System.out.println("Matriz de adjacência");
+        System.out.print("     ");
+        for (Aluno a: getListaAlunos()){
+            System.out.print(a.getNome() + " - ");
+        }
+        System.out.println();
+        for (int i = 0; i < getListaAlunos().size(); i++) {
+            System.out.print(getListaAlunos().get(i).getNome() + " | ");
+            for(int j = 0; j < getListaAlunos().size(); j++){
+                System.out.print(getMatrizAdj()[i][j] + "    ");
+            }
+            System.out.println();
         }
     }
 
