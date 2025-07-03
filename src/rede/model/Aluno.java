@@ -1,15 +1,15 @@
 package rede.model;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Aluno {
     private String nome;
     private String matricula;
-    private List<Disciplina> listaDisciplinas;
+    private ArrayList<Disciplina> listaDisciplinas;
 
-    public Aluno(String nome, String matricula, List<Disciplina> listaDisciplinas){
+    public Aluno(String nome, String matricula){
         this.nome = nome;
         this.matricula = matricula;
-        this.listaDisciplinas = listaDisciplinas;
+        this.listaDisciplinas = new ArrayList<>();
     }
 
     public String getNome() {
@@ -28,11 +28,11 @@ public class Aluno {
         this.matricula = matricula;
     }
 
-    public List<Disciplina> getListaDisciplinas() {
+    public ArrayList<Disciplina> getListaDisciplinas() {
         return listaDisciplinas;
     }
 
-    public void setListaDisciplinas(List<Disciplina> listaDisciplinas) {
+    public void setListaDisciplinas(ArrayList<Disciplina> listaDisciplinas) {
         this.listaDisciplinas = listaDisciplinas;
     }
 }

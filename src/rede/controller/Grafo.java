@@ -1,6 +1,9 @@
 package rede.controller;
 import rede.model.Aluno;
-import java.util.List;
+import rede.model.Disciplina;
+
+import java.util.ArrayList;
+
 
 public class Grafo {
     // atributos: listaAlunos, matrizAdj
@@ -9,19 +12,33 @@ public class Grafo {
     // 4.criarRede, 5. maisConectado, 6.sugerirAmigos, 7.grauAluno (Joana)
     // 8.listarAmigos, 9. verComunidade , 10.buscarCaminho, 11.parAlunos (JP)
 
-    private List<Aluno> listaAlunos;
+    private ArrayList<Aluno> listaAlunos;
     private int[][] matrizAdj;
 
-    public Grafo(List<Aluno> listaAlunos, int[][] matrizAdj) {
-        this.listaAlunos = listaAlunos;
-        this.matrizAdj = matrizAdj;
+    public Grafo() {
+        this.listaAlunos = new ArrayList<>();
+        this.matrizAdj = new int[0][0];
     }
 
-    public List<Aluno> getListaAlunos() {
+    public void addAluno(String nome, String matricula){
+        Aluno novoAluno = new Aluno(nome, matricula);
+        getListaAlunos().add(novoAluno);
+    }
+
+    public void addDisciplina(String matricula, String nomeDisciplina, String codigo){
+        Disciplina novaDisciplina = new Disciplina(nomeDisciplina, codigo);
+        for(Aluno a : getListaAlunos()){
+            if(a.getMatricula().equals(matricula)){
+                a.getListaDisciplinas().add(novaDisciplina);
+            }
+        }
+    }
+
+    public ArrayList<Aluno> getListaAlunos() {
         return listaAlunos;
     }
 
-    public void setListaAlunos(List<Aluno> listaAlunos) {
+    public void setListaAlunos(ArrayList<Aluno> listaAlunos) {
         this.listaAlunos = listaAlunos;
     }
 
