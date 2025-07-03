@@ -35,6 +35,22 @@ public class Grafo {
         }
     }
 
+    public Aluno buscarAlunoMatricula(String matricula){
+        for(Aluno a : getListaAlunos()){
+            if(a.getMatricula().equals(matricula)){
+                return a;
+            }
+        } return null;
+    }
+
+    public Aluno buscarAlunoNome(String nome){
+        for(Aluno a : getListaAlunos()){
+            if(a.getNome().equalsIgnoreCase(nome)){
+                return a;
+            }
+        } return null;
+    }
+
     private void redimensionarMatriz(){
         int tamanho = getListaAlunos().size();
         int [][] novaMatriz = new int[tamanho][tamanho];
