@@ -1,5 +1,6 @@
 package rede.controller;
 import rede.model.Aluno;
+import rede.model.Aresta;
 import rede.model.Disciplina;
 
 import java.util.ArrayList;
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 
 public class Grafo {
     // operações:
-    // 3. buscarAluno- Falta testar
     //, 5. maisConectado(Nataly), 6.sugerirAmigos(JP), 7.grauAluno(Nataly)
     // 8.listarAmigos(Joana), 9. verComunidade(Joana), 10.buscarCaminho(Nataly), 11.parAlunos(JP)
 
@@ -65,13 +65,33 @@ public class Grafo {
     public void criarRede(){ //Deve ser criada a partir de disciplinas iguais logo vai ser automatico
 
         for(int i = 0; i < getListaAlunos().size(); i++){
-            for(int j = i + 1; j < getListaAlunos().size(); j++){
+            for(int j = i + 1; j < getListaAlunos().size(); j++) {
                 Aluno a1 = getListaAlunos().get(i);
                 Aluno a2 = getListaAlunos().get(j);
                 int peso = contarDisciplinas(a1, a2);
                 getMatrizAdj()[i][j] = peso;
                 getMatrizAdj()[j][i] = peso; //N direcionado
+
+                // Arestas
+                if(peso > 0){
+                    Aresta aresta = a1.buscaAresta(a2);
+
+                    // Cria aresta de amizade, se ainda não existe
+                    if (aresta == null) {
+                        Aresta amizade = new Aresta(a1, a2, peso);
+                        a1.addAresta(amizade);
+                        a2.addAresta(amizade);
+                    }
+
+                    // Se já existe, atualiza peso da amizade
+                    else {
+                        aresta.setPeso(peso);
+
+                    }
+                }
+
             }
+
         }
     }
 
@@ -103,29 +123,6 @@ public class Grafo {
             System.out.println();
         }
     }
-
-    /*public void imprimirRede() {
-        Graph g = new Graph("Rede Social Acadêmica");
-
-        // Adiciona os nós
-        ArrayList<Node> nos = new ArrayList<>();
-        for (Aluno aluno : listaAlunos) {
-            Node n = new Node(aluno.getNome());
-            g.addNode(n);
-            nos.add(n);
-        }
-
-        // Cria as conexões
-        for (int i = 0; i < listaAlunos.size(); i++) {
-            for (int j = i + 1; j < listaAlunos.size(); j++) {
-                if (matrizAdj[i][j] > 0) {
-                    g.addEdge(nos.get(i), nos.get(j), String.valueOf(matrizAdj[i][j]));
-                }
-            }
-        }
-
-        g.display();
-    }*/
 
     public ArrayList<Aluno> getListaAlunos() {
         return listaAlunos;

@@ -2,6 +2,7 @@ package rede;
 
 import rede.controller.Grafo;
 import rede.model.Aluno;
+import rede.model.Aresta;
 import rede.model.Disciplina;
 import rede.view.DrawGraph;
 
@@ -124,7 +125,7 @@ public class Main {
         }
 
         // Verificando alunos e suas disciplinas
-        for(int i = 0; i < rede.getListaAlunos().size(); i++){
+        /*for(int i = 0; i < rede.getListaAlunos().size(); i++){
             Aluno aluno = rede.getListaAlunos().get(i);
             System.out.println("========== " + aluno.getNome() + " ==========");
             System.out.println(aluno);
@@ -133,17 +134,37 @@ public class Main {
             for(int j = 0; j < disciplinasAluno.size(); j++){
                 System.out.println(disciplinasAluno.get(j));
             }
-        }
+        }*/
+
 
         rede.criarRede();
+        // Ver aresta de Harry e Hermione
+        /*System.out.println("Arestas de Luna Antes ===========");
+        Aluno luna = rede.getListaAlunos().get(4);
+        for(Aresta a: luna.getListaAresta()){
+            System.out.println(a);
+        }
+        System.out.println("===============================");
 
-        rede.imprimirMatriz();
+        // Add PD II a Luna
+        rede.addDisciplina(luna.getMatricula(), disciplinas[13].getNome(), disciplinas[13].getCodigo());
+        rede.addDisciplina(luna.getMatricula(), disciplinas[31].getNome(), disciplinas[31].getCodigo());
+        rede.criarRede();
+        //
+        /*int idx = harry.getListaAresta().indexOf(rede.getListaAlunos().get(1));
+        System.out.println(harry.getListaAresta().get(idx));
+        System.out.println("Arestas de Luna Depois ===========");
+
+        for(Aresta a: luna.getListaAresta()){
+            System.out.println(a);
+        }
+        System.out.println(luna.getListaAresta().size());*/
+
+
+        //rede.imprimirMatriz();
 
         DrawGraph.showGraph(rede.getListaAlunos(), rede.getMatrizAdj());
 
-        Aluno a1 = rede.buscarAlunoNome("Harry Potter");
-        Aluno a2 = rede.buscarAlunoMatricula("2023004");
-        System.out.println(a1.getMatricula() + " :" + a1.getNome());
-        System.out.println(a2.getMatricula() + " :" + a2.getNome());
+
     }
 }

@@ -18,6 +18,15 @@ public class Aluno {
         getListaAresta().add(aresta);
     }
 
+    public Aresta buscaAresta(Aluno amigo){
+        for(int i = 0; i < getListaAresta().size(); i++){
+            if(amigo == getListaAresta().get(i).getAluno1() || amigo == getListaAresta().get(i).getAluno2()){
+                return getListaAresta().get(i);
+            }
+        }
+        return null;
+    }
+
     public String getNome() {
         return nome;
     }
