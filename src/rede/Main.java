@@ -165,6 +165,16 @@ public class Main {
 
         DrawGraph.showGraph(rede.getListaAlunos(), rede.getMatrizAdj());
 
+        rede.grauAluno("Dobby");
+        rede.grauAluno("Harry Potter");
+        rede.alunoMaisConectado();
+        System.out.println();
+        System.out.println("Buscando caminho entre Luna Lovegood e Ron Weasley:");
+        rede.buscarCaminho("Luna Lovegood", "Ron Weasley");
+
+        System.out.println("Buscando caminho entre Luna Lovegood e Remus Lupin:");
+        rede.buscarCaminho("Luna Lovegood", "Remus Lupin");
+
 
     }
 }
