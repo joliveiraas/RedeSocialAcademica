@@ -4,7 +4,7 @@ import rede.model.Aresta;
 import rede.model.Disciplina;
 
 import java.util.ArrayList;
-
+import java.util.Stack;
 
 public class Grafo {
     // operações:
@@ -39,7 +39,9 @@ public class Grafo {
             if(a.getMatricula().equals(matricula)){
                 return a;
             }
-        } return null;
+        }
+        System.out.println("Aluno não encontrado");
+        return null;
     }
 
     public Aluno buscarAlunoNome(String nome){
@@ -47,7 +49,9 @@ public class Grafo {
             if(a.getNome().equalsIgnoreCase(nome)){
                 return a;
             }
-        } return null;
+        }
+        System.out.println("Aluno não encontrado");
+        return null;
     }
 
     private void redimensionarMatriz(){
@@ -123,6 +127,107 @@ public class Grafo {
             System.out.println();
         }
     }
+
+    public int grauAluno(String nome){
+        Aluno aluno = buscarAlunoNome(nome);
+        int i = listaAlunos.indexOf(aluno);
+        int grau = 0;
+
+        if(aluno == null){
+            return -1;
+        }
+        for(int j = 0; j < matrizAdj.length; j++){
+            if(matrizAdj[i][j]>0){
+                grau++;
+            }
+        }
+        System.out.println("Aluno "+ nome + ": " + grau + " conexões");
+        return grau;
+    }
+
+    public ArrayList<Aluno> alunoMaisConectado(){
+        int max = -1;
+        ArrayList<Aluno> maisConectado = new ArrayList<>();
+
+        for (Aluno a : listaAlunos) {
+            int grau = 0;
+            int index = listaAlunos.indexOf(a);
+
+            for (int j = 0; j < matrizAdj.length; j++) {
+                if (matrizAdj[index][j] > 0){
+                    grau++;
+                }
+            }
+
+            if (grau > max) {
+                max = grau;
+                maisConectado.clear();
+                maisConectado.add(a);
+            } else if (grau == max) {
+                maisConectado.add(a);
+            }
+        }
+
+        System.out.println("Maior grau: " + max);
+        System.out.println("====== Aluno mais conectado ====== ");
+        for (Aluno aluno : maisConectado) {
+            System.out.println(aluno.getNome());
+        }
+        return maisConectado;
+    }
+
+    // DFS iterativo com pilha para buscar caminho entre alunos
+    public void buscarCaminho(String origemNome, String destinoNome) {
+        Aluno origem = buscarAlunoNome(origemNome);
+        Aluno destino = buscarAlunoNome(destinoNome);
+
+        if (origem == null || destino == null){
+            return;
+        }
+
+        int origemIndex = listaAlunos.indexOf(origem);
+        int destinoIndex = listaAlunos.indexOf(destino);
+
+        boolean[] visitado = new boolean[listaAlunos.size()];
+        int[] anterior = new int[listaAlunos.size()];
+
+        for (int i = 0; i < anterior.length; i++) {
+            anterior[i] = -1;
+        }
+
+        Stack<Integer> pilha = new Stack<>();
+        pilha.push(origemIndex);
+        visitado[origemIndex] = true;
+
+        while (!pilha.isEmpty()) {
+            int atual = pilha.pop();
+
+            if (atual == destinoIndex) {
+                break;
+            }
+
+            for (int j = 0; j < matrizAdj.length; j++) {
+                if (matrizAdj[atual][j] > 0 && !visitado[j]) {
+                    pilha.push(j);
+                    visitado[j] = true;
+                    anterior[j] = atual;
+                }
+            }
+        }
+
+        if (!visitado[destinoIndex]) {
+            System.out.println("Caminho não encontrado.");
+            return;
+        }
+
+        ArrayList<String> caminho = new ArrayList<>();
+        for (int i = destinoIndex; i != -1; i = anterior[i]) {
+            caminho.add(0, listaAlunos.get(i).getNome());
+        }
+
+        System.out.println("Caminho de " + origemNome + " até " + destinoNome + ": " + String.join(" -> ", caminho));
+    }
+
 
     public ArrayList<Aluno> getListaAlunos() {
         return listaAlunos;
