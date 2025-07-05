@@ -27,6 +27,17 @@ public class Aluno {
         return null;
     }
 
+    public void verAmigos(){
+        for(Aresta a: getListaAresta()){
+            if(a.getAluno2().getMatricula() != matricula){
+                System.out.println(a.getAluno2());
+            }
+            else{
+                System.out.println(a.getAluno1());
+            }
+        }
+    }
+
     public String getNome() {
         return nome;
     }

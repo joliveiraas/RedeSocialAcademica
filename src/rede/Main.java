@@ -138,7 +138,7 @@ public class Main {
 
 
         rede.criarRede();
-        // Ver aresta de Harry e Hermione
+        //rede.getListaAlunos().getFirst().verAmigos();
         /*System.out.println("Arestas de Luna Antes ===========");
         Aluno luna = rede.getListaAlunos().get(4);
         for(Aresta a: luna.getListaAresta()){

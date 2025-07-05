@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Grafo {
     // operações:
     //, 5. maisConectado(Nataly), 6.sugerirAmigos(JP), 7.grauAluno(Nataly)
-    // 8.listarAmigos(Joana), 9. verComunidade(Joana), 10.buscarCaminho(Nataly), 11.parAlunos(JP)
+    // 9. verComunidade(Joana), 10.buscarCaminho(Nataly), 11.parAlunos(JP)
 
     private ArrayList<Aluno> listaAlunos;
     private int[][] matrizAdj;
