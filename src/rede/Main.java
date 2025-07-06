@@ -99,7 +99,7 @@ public class Main {
                 new Aluno("Lord Voldemort", "2023020")
         };
 
-        // Adiciona aluno na rede e atribui 11 disciplinas diferentes a cada um
+        // Adiciona aluno na rede e atribui 11 disciplinas aleatórias a cada um
         for (int i = 0; i < 5; i++) {
             Aluno aluno = alunos[i];
             rede.addAluno(aluno.getNome(), aluno.getMatricula());
@@ -138,8 +138,8 @@ public class Main {
 
 
         rede.criarRede();
-        //rede.getListaAlunos().getFirst().verAmigos();
-        /*System.out.println("Arestas de Luna Antes ===========");
+        rede.getListaAlunos().getFirst().verAmigos();
+        System.out.println("Arestas de Luna Antes ===========");
         Aluno luna = rede.getListaAlunos().get(4);
         for(Aresta a: luna.getListaAresta()){
             System.out.println(a);
@@ -152,18 +152,20 @@ public class Main {
         rede.criarRede();
         //
         /*int idx = harry.getListaAresta().indexOf(rede.getListaAlunos().get(1));
-        System.out.println(harry.getListaAresta().get(idx));
+        System.out.println(harry.getListaAresta().get(idx));*/
         System.out.println("Arestas de Luna Depois ===========");
 
         for(Aresta a: luna.getListaAresta()){
             System.out.println(a);
         }
-        System.out.println(luna.getListaAresta().size());*/
+        System.out.println(luna.getListaAresta().size());
+
+        luna.verAmigos();
 
 
         //rede.imprimirMatriz();
 
-        //DrawGraph.showGraph(rede.getListaAlunos(), rede.getMatrizAdj());
+        DrawGraph.showGraph(rede.getListaAlunos(), rede.getMatrizAdj());
 
 //        rede.grauAluno("Dobby");
 //        rede.grauAluno("Harry Potter");

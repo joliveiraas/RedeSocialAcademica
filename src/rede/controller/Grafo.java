@@ -10,8 +10,7 @@ import java.util.Stack;
 
 public class Grafo {
     // operações:
-    //, 5. maisConectado(Nataly), 6.sugerirAmigos(JP), 7.grauAluno(Nataly)
-    // 9. verComunidade(Joana), 10.buscarCaminho(Nataly), 11.parAlunos(JP)
+    // 9. verComunidade(Joana)
 
     private ArrayList<Aluno> listaAlunos;
     private int[][] matrizAdj;
@@ -89,12 +88,24 @@ public class Grafo {
             for(int j = i+1; j < n; j++){
                 int peso = getMatrizAdj()[i][j];
                 if(peso > 0 ){
-                    Aluno origem = getListaAlunos().get(i);
-                    Aluno destino = getListaAlunos().get(j);
-                    Aresta a1 = new Aresta(origem, destino, peso);
-                    Aresta a2 = new Aresta(destino, origem, peso);
-                    origem.addAresta(a1);
-                    destino.addAresta(a2);
+
+                    Aresta a = getListaAlunos().get(i).buscaAresta(getListaAlunos().get(j));
+
+                    if(a == null){
+                        Aluno origem = getListaAlunos().get(i);
+                        Aluno destino = getListaAlunos().get(j);
+                        Aresta a1 = new Aresta(origem, destino, peso);
+                        Aresta a2 = new Aresta(destino, origem, peso);
+                        origem.addAresta(a1);
+                        destino.addAresta(a2);
+                    }
+                    else{
+                        Aresta a1 = getListaAlunos().get(i).buscaAresta(getListaAlunos().get(j));
+                        Aresta a2 = getListaAlunos().get(j).buscaAresta(getListaAlunos().get(i));
+                        a1.setPeso(peso);
+                        a2.setPeso(peso);
+                    }
+
                 }
             }
         }
