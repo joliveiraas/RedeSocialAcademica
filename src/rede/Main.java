@@ -108,12 +108,12 @@ public class Main {
                     disciplinas[(i * 3) % disciplinas.length],
                     disciplinas[(i * 5 + 1) % disciplinas.length],
                     disciplinas[(i * 3 + 2) % disciplinas.length],
-                    disciplinas[(i * 1 + 3) % disciplinas.length],
+                    disciplinas[(i  + 3) % disciplinas.length],
                     disciplinas[(i * 7 + 4) % disciplinas.length],
                     disciplinas[(i * 3 + 5) % disciplinas.length],
                     disciplinas[(i * 5 + 6) % disciplinas.length],
                     disciplinas[(i * 3 + 7) % disciplinas.length],
-                    disciplinas[(i * 1 + 8) % disciplinas.length],
+                    disciplinas[(i  + 8) % disciplinas.length],
                     disciplinas[(i * 3 + 9) % disciplinas.length],
                     disciplinas[(i * 7 + 10) % disciplinas.length]
             ));
@@ -163,18 +163,43 @@ public class Main {
 
         //rede.imprimirMatriz();
 
-        DrawGraph.showGraph(rede.getListaAlunos(), rede.getMatrizAdj());
+        //DrawGraph.showGraph(rede.getListaAlunos(), rede.getMatrizAdj());
 
-        rede.grauAluno("Dobby");
-        rede.grauAluno("Harry Potter");
-        rede.alunoMaisConectado();
-        System.out.println();
-        System.out.println("Buscando caminho entre Luna Lovegood e Ron Weasley:");
-        rede.buscarCaminho("Luna Lovegood", "Ron Weasley");
+//        rede.grauAluno("Dobby");
+//        rede.grauAluno("Harry Potter");
+//        rede.alunoMaisConectado();
+//        System.out.println();
+//        System.out.println("Buscando caminho entre Luna Lovegood e Ron Weasley:");
+//        rede.buscarCaminho("Luna Lovegood", "Ron Weasley");
+//
+//        System.out.println("Buscando caminho entre Luna Lovegood e Remus Lupin:");
+//        rede.buscarCaminho("Luna Lovegood", "Remus Lupin");
 
-        System.out.println("Buscando caminho entre Luna Lovegood e Remus Lupin:");
-        rede.buscarCaminho("Luna Lovegood", "Remus Lupin");
 
+        Aluno test = rede.getListaAlunos().get(4);
+
+//        System.out.println("Amigos de: "+ test.getNome());
+//
+//        ArrayList<Aresta> testList = test.getListaAresta();
+//
+//        for(Aresta a: testList){
+//            System.out.println(a.toString());
+//        }
+
+        ArrayList<Aluno> sugestoes = rede.sugerirAmigo(test.getNome(), 3); //Teste com limite = 3
+
+        if(sugestoes.isEmpty()){
+            System.out.println("Nenhuma sugestão encontrada para " + test.getNome() + "!");
+        } else{
+            System.out.println("Sugestões de amigos para " + test.getNome() + ": ");{
+                for(Aluno sugerido : sugestoes){
+                    System.out.println(" -> " + sugerido.getNome());
+                }
+            }
+        }
+        System.out.println("=======================================================");
+        //Teste Pares de alunos com mais disciplinas
+        rede.mostrarParAlunos();
 
     }
 }
