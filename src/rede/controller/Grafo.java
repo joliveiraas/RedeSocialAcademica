@@ -10,7 +10,7 @@ import java.util.Stack;
 
 public class Grafo {
     // operações:
-    // 9. verComunidade(Joana)
+    // 9. verComunidade(Joana) - verificar com professor
 
     private ArrayList<Aluno> listaAlunos;
     private int[][] matrizAdj;
@@ -26,8 +26,8 @@ public class Grafo {
         redimensionarMatriz();
     }
 
-    public void addDisciplina(String matricula, String nomeDisciplina, String codigo) {
-        Disciplina novaDisciplina = new Disciplina(nomeDisciplina, codigo);
+    public void addDisciplina(String matricula, String nomeDisciplina, String codigo, String curso) {
+        Disciplina novaDisciplina = new Disciplina(nomeDisciplina, codigo, curso);
         for (Aluno a : getListaAlunos()) {
             if (a.getMatricula().equals(matricula)) {
                 a.getListaDisciplinas().add(novaDisciplina);

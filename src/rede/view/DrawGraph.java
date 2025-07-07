@@ -1,108 +1,120 @@
-// Arquivo: DrawGraph.java
 package rede.view;
 
+import rede.controller.Grafo;
 import rede.model.Aluno;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 
 public class DrawGraph extends JPanel {
-    private ArrayList<Aluno> alunos;
-    private int[][] matrizAdj;
-    private static final int VERTEX_RADIUS_MIN = 25;
-    private static final int VERTEX_RADIUS_MAX = 50;
-    private static final int PADDING = 80;
+    private Grafo grafo;
+    private static final int RADIUS = 30;
+    private static final int VERTEX_RADIUS = 22;
 
-    public DrawGraph(ArrayList<Aluno> alunos, int[][] matrizAdj) {
-        this.alunos = alunos;
-        this.matrizAdj = matrizAdj;
+    public DrawGraph(Grafo grafo) {
+        this.grafo = grafo;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (alunos == null || alunos.isEmpty()) return;
+        if (grafo == null || grafo.getListaAlunos().isEmpty()) return;
 
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        int n = grafo.getListaAlunos().size();
+        Point[] positions = new Point[n];
 
-        int n = alunos.size();
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
-        int maxRadius = Math.min(centerX, centerY) - PADDING;
-        int minRadius = 100;
-        Point[] points = new Point[n];
+        int clusterRadius = 100;
 
-        // Calcula grau de cada aluno
-        int[] graus = new int[n];
-        int grauMax = 1;
+        // Define os centros dos clusters por casa
+        Map<String, Point> centros = new HashMap<>();
+        centros.put("COMPUTACAO", new Point(centerX - 250, centerY - 150));
+        centros.put("ELETRICA", new Point(centerX + 250, centerY - 150));
+        centros.put("CIVIL", new Point(centerX - 250, centerY + 150));
+        centros.put("MECANICA", new Point(centerX + 250, centerY + 150));
+        centros.put("INDEFINIDO", new Point(centerX, centerY));
+
+
+        // Agrupa alunos por curso
+        Map<String, List<Integer>> comunidades = new HashMap<>();
+        for (String curso : centros.keySet()) {
+            comunidades.put(curso, new ArrayList<>());
+        }
         for (int i = 0; i < n; i++) {
-            int grau = 0;
-            for (int j = 0; j < n; j++) {
-                if (matrizAdj[i][j] > 0) grau += matrizAdj[i][j];
+            Aluno aluno = grafo.getListaAlunos().get(i);
+            String curso = aluno.afinidadeCurso();
+            if (!comunidades.containsKey(curso)) curso = "INDEFINIDO";  // fallback
+            comunidades.get(curso).add(i);
+        }
+
+        // Posiciona os alunos em círculo dentro de cada cluster
+        for (Map.Entry<String, List<Integer>> entry : comunidades.entrySet()) {
+            List<Integer> indices = entry.getValue();
+            Point centro = centros.get(entry.getKey());
+
+            for (int j = 0; j < indices.size(); j++) {
+                double angle = 2 * Math.PI * j / indices.size();
+                int x = centro.x + (int) (clusterRadius * Math.cos(angle));
+                int y = centro.y + (int) (clusterRadius * Math.sin(angle));
+                positions[indices.get(j)] = new Point(x, y);
             }
-            graus[i] = grau;
-            if (grau > grauMax) grauMax = grau;
         }
 
-        // Posiciona os alunos em círculo com distância radial proporcional ao grau
-        for (int i = 0; i < n; i++) {
-            double angle = 2 * Math.PI * i / n;
-            double rel = (double) graus[i] / grauMax;
-            int radius = (int) (maxRadius - rel * (maxRadius - minRadius));
-            int x = centerX + (int) (radius * Math.cos(angle));
-            int y = centerY + (int) (radius * Math.sin(angle));
-            points[i] = new Point(x, y);
-        }
-
-        // Desenha as arestas com cor e peso
+        // Desenha arestas com pesos
+        Random rand = new Random(42);
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
-                int peso = matrizAdj[i][j];
-                if (peso > 0) {
-                    g2d.setColor(new Color(200, 100, 255));
-                    g2d.setStroke(new BasicStroke(1 + peso));
-                    g2d.drawLine(points[i].x, points[i].y, points[j].x, points[j].y);
+                int peso = grafo.getMatrizAdj()[i][j];
+                if (peso != 0) {
+                    g.setColor(new Color(180, 100, 255));
+                    g.drawLine(positions[i].x, positions[i].y, positions[j].x, positions[j].y);
 
-                    // Desenha peso
-
-                    g2d.setFont(new Font("Arial", Font.BOLD, 14)); // Tamanho 14 em negrito
-                    g2d.setColor(Color.BLACK); // Cor preta para o peso
-
-                    int mx = (points[i].x + points[j].x) / 2;
-                    int my = (points[i].y + points[j].y) / 2;
-                    g2d.drawString(String.valueOf(matrizAdj[i][j]), mx, my);
-
+                    // Escreve o peso
+                    int mx = (positions[i].x + positions[j].x) / 2;
+                    int my = (positions[i].y + positions[j].y) / 2;
+                    g.setColor(Color.MAGENTA);
+                    g.setFont(new Font("Arial", Font.BOLD, 12));
+                    g.drawString(String.valueOf(peso), mx, my);
                 }
             }
         }
 
         // Desenha os vértices (alunos)
         for (int i = 0; i < n; i++) {
-            double rel = (double) graus[i] / grauMax;
-            int raio = (int)(VERTEX_RADIUS_MIN + rel * (VERTEX_RADIUS_MAX - VERTEX_RADIUS_MIN));
+            Aluno aluno = grafo.getListaAlunos().get(i);
+            String curso = aluno.afinidadeCurso();
 
-            g2d.setColor(new Color(100, 255, 255));
-            Ellipse2D.Double circle = new Ellipse2D.Double(points[i].x - raio / 2, points[i].y - raio / 2, raio, raio);
-            g2d.fill(circle);
-            g2d.setColor(Color.BLACK);
-            g2d.draw(circle);
+            // Cor por casa
+            switch (curso) {
+                case "COMPUTACAO": g.setColor(Color.RED); break;
+                case "ELETRICA": g.setColor(Color.GREEN); break;
+                case "CIVIL": g.setColor(Color.BLUE); break;
+                case "MECANICA": g.setColor(Color.ORANGE); break;
+                default: g.setColor(Color.CYAN);
+            }
+
+            Point p = positions[i];
+            g.fillOval(p.x - VERTEX_RADIUS / 2, p.y - VERTEX_RADIUS / 2, VERTEX_RADIUS, VERTEX_RADIUS);
+            g.setColor(Color.BLACK);
+            g.drawOval(p.x - VERTEX_RADIUS / 2, p.y - VERTEX_RADIUS / 2, VERTEX_RADIUS, VERTEX_RADIUS);
 
             // Nome do aluno
-            String nome = alunos.get(i).getNome();
-            FontMetrics fm = g2d.getFontMetrics();
+            String nome = aluno.getNome();
+            FontMetrics fm = g.getFontMetrics();
             int textWidth = fm.stringWidth(nome);
-            g2d.drawString(nome, points[i].x - textWidth / 2, points[i].y + raio / 2 + 15);
+            g.drawString(nome, p.x - textWidth / 2, p.y + VERTEX_RADIUS);
         }
     }
 
-    public static void showGraph(ArrayList<Aluno> alunos, int[][] matrizAdj) {
+    public static void showGraph(Grafo grafo) {
         JFrame frame = new JFrame("Rede Social Acadêmica");
-        DrawGraph panel = new DrawGraph(alunos, matrizAdj);
+        DrawGraph panel = new DrawGraph(grafo);
         frame.add(panel);
-        frame.setSize(900, 900);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(1500, 900);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 }
