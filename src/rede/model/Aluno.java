@@ -1,15 +1,64 @@
 package rede.model;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Aluno {
     private String nome;
     private String matricula;
-    private List<Disciplina> listaDisciplinas;
+    private ArrayList<Disciplina> listaDisciplinas;
+    private ArrayList<Aresta> listaAresta;
 
-    public Aluno(String nome, String matricula, List<Disciplina> listaDisciplinas){
+    public Aluno(String nome, String matricula){
         this.nome = nome;
         this.matricula = matricula;
-        this.listaDisciplinas = listaDisciplinas;
+        this.listaDisciplinas = new ArrayList<>();
+        this.setListaAresta(new ArrayList<>());
+    }
+
+    public void addAresta(Aresta aresta){
+        getListaAresta().add(aresta);
+    }
+
+    public Aresta buscaAresta(Aluno amigo){
+        for(int i = 0; i < getListaAresta().size(); i++){
+            if(amigo == getListaAresta().get(i).getAluno1() || amigo == getListaAresta().get(i).getAluno2()){
+                return getListaAresta().get(i);
+            }
+        }
+        return null;
+    }
+
+    public void verAmigos(){
+        for(Aresta a: getListaAresta()){
+            if(a.getAluno2().getMatricula() != matricula){
+                System.out.println(a.getAluno2());
+            }
+            else{
+                System.out.println(a.getAluno1());
+            }
+        }
+    }
+
+    public String afinidadeCurso() {
+        Map<String, Integer> contagemCursos = new HashMap<>();
+
+        for (Disciplina d : listaDisciplinas) {
+            String curso = d.getCurso();
+            contagemCursos.put(curso, contagemCursos.getOrDefault(curso, 0) + 1);
+        }
+
+        String cursoMaisFrequente = null;
+        int max = 0;
+
+        for (Map.Entry<String, Integer> entry : contagemCursos.entrySet()) {
+            if (entry.getValue() > max) {
+                max = entry.getValue();
+                cursoMaisFrequente = entry.getKey();
+            }
+        }
+
+        return cursoMaisFrequente != null ? cursoMaisFrequente : "INDEFINIDO";
     }
 
     public String getNome() {
@@ -28,12 +77,25 @@ public class Aluno {
         this.matricula = matricula;
     }
 
-    public List<Disciplina> getListaDisciplinas() {
+    public ArrayList<Disciplina> getListaDisciplinas() {
         return listaDisciplinas;
     }
 
-    public void setListaDisciplinas(List<Disciplina> listaDisciplinas) {
+    public void setListaDisciplinas(ArrayList<Disciplina> listaDisciplinas) {
         this.listaDisciplinas = listaDisciplinas;
+    }
+
+    @Override
+    public String toString() {
+        return getNome() + ", " + getMatricula();
+    }
+
+    public ArrayList<Aresta> getListaAresta() {
+        return listaAresta;
+    }
+
+    public void setListaAresta(ArrayList<Aresta> listaAresta) {
+        this.listaAresta = listaAresta;
     }
 }
 
