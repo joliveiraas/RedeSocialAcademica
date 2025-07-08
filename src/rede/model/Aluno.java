@@ -40,26 +40,6 @@ public class Aluno {
         }
     }
 
-    public String afinidadeCurso() {
-        Map<String, Integer> contagemCursos = new HashMap<>();
-
-        for (Disciplina d : listaDisciplinas) {
-            String curso = d.getCurso();
-            contagemCursos.put(curso, contagemCursos.getOrDefault(curso, 0) + 1);
-        }
-
-        String cursoMaisFrequente = null;
-        int max = 0;
-
-        for (Map.Entry<String, Integer> entry : contagemCursos.entrySet()) {
-            if (entry.getValue() > max) {
-                max = entry.getValue();
-                cursoMaisFrequente = entry.getKey();
-            }
-        }
-
-        return cursoMaisFrequente != null ? cursoMaisFrequente : "INDEFINIDO";
-    }
 
     public String getNome() {
         return nome;
