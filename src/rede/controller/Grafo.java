@@ -3,15 +3,10 @@ import rede.model.Aluno;
 import rede.model.Aresta;
 import rede.model.Disciplina;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
+
 
 public class Grafo {
-    // operações:
-    // 9. verComunidade(Joana) - verificar com professor
-
     private ArrayList<Aluno> listaAlunos;
     private int[][] matrizAdj;
 
@@ -26,8 +21,8 @@ public class Grafo {
         redimensionarMatriz();
     }
 
-    public void addDisciplina(String matricula, String nomeDisciplina, String codigo, String curso) {
-        Disciplina novaDisciplina = new Disciplina(nomeDisciplina, codigo, curso);
+    public void addDisciplina(String matricula, String nomeDisciplina, String codigo) {
+        Disciplina novaDisciplina = new Disciplina(nomeDisciplina, codigo);
         for (Aluno a : getListaAlunos()) {
             if (a.getMatricula().equals(matricula)) {
                 a.getListaDisciplinas().add(novaDisciplina);
@@ -325,8 +320,39 @@ public class Grafo {
                 System.out.println("-> " + s);
             }
         }
+    }
 
+    public List<List<Aluno>> detectarComunidades(List<Aluno> alunos) {
+        List<List<Aluno>> comunidades = new ArrayList<>();
+        boolean[] visitado = new boolean[alunos.size()];
 
+        for (int i = 0; i < alunos.size(); i++) {
+            if (visitado[i]) continue;
+
+            Aluno a1 = alunos.get(i);
+            List<Aluno> comunidade = new ArrayList<>();
+            comunidade.add(a1);
+            visitado[i] = true;
+
+            for (int j = i + 1; j < alunos.size(); j++) {
+                if (visitado[j]) continue;
+
+                Aluno a2 = alunos.get(j);
+                int disciplinasEmComum = contarDisciplinas(a1, a2);
+
+                if (disciplinasEmComum >= 6) {
+                    comunidade.add(a2);
+                    visitado[j] = true;
+                }
+            }
+
+            // Só adiciona se tiver pelo menos 2 membros
+            if (comunidade.size() >= 2) {
+                comunidades.add(comunidade);
+            }
+        }
+
+        return comunidades;
     }
 
     public ArrayList<Aluno> getListaAlunos() {
@@ -344,6 +370,5 @@ public class Grafo {
     public void setMatrizAdj(int[][] matrizAdj) {
         this.matrizAdj = matrizAdj;
     }
-
 
 }
