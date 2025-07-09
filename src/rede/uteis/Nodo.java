@@ -1,17 +1,17 @@
 package rede.uteis;
 
-public class Nodo{
+public class Nodo<T>{
     int val;
-    Object obj;
-    Nodo prox;
-    Nodo ant; //para lista dupla
+    T obj;
+    Nodo<T> prox;
+    Nodo<T> ant; //para lista dupla
 
     public Nodo(int novoVal){
         this.val = novoVal;
         this.prox = null;
         this.ant = null;
     }
-    public Nodo(Object obj){
+    public Nodo(T obj){
         this.obj = obj;
     }
 
@@ -22,18 +22,18 @@ public class Nodo{
         this.val = val;
     }
 
-    public Nodo getProx(){
+    public Nodo<T> getProx(){
         return this.prox;
     }
-    public void setProx(Nodo prox){
+    public void setProx(Nodo<T> prox){
         this.prox = prox;
     }
 
-    public Nodo getAnt() {
+    public Nodo<T> getAnt() {
         return ant;
     }
 
-    public void setAnt(Nodo ant) {
+    public void setAnt(Nodo<T> ant) {
         this.ant = ant;
     }
 }

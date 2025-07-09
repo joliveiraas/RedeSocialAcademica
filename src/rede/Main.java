@@ -3,6 +3,7 @@ package rede;
 import rede.controller.Grafo;
 import rede.model.Aluno;
 import rede.model.Disciplina;
+import rede.uteis.ListaEncadeada;
 import rede.view.RedeView;
 
 import java.util.*;
@@ -39,10 +40,10 @@ public class Main {
             rede.addAluno(aluno.getNome(), aluno.getMatricula());
             Random rand = new Random(i * 31); // semente diferente para cada aluno
 
-            while(rede.getListaAlunos().get(i).getListaDisciplinas().size() < 5){
+            while(rede.getListAlunos().get(i).getListaDisciplinas().getTamanho() < 5){
                 int idx = rand.nextInt(bcet.length);
                 Disciplina d = bcet[idx];
-                if(!aluno.getListaDisciplinas().contains(d)){
+                if(!aluno.getListaDisciplinas().contem(d)){
                     rede.addDisciplina(aluno.getMatricula(), aluno.getNome(), d.getCodigo());
                 }
             }
@@ -52,7 +53,7 @@ public class Main {
         for (int i = 0; i < alunos.length; i++) {
             Aluno aluno = alunos[i];
 
-            ArrayList<Disciplina> disciplinasAluno = new ArrayList<>();
+            ListaEncadeada<Disciplina> disciplinasAluno = new ListaEncadeada<>();
             Disciplina[] conjunto;
 
             // Computação
@@ -72,14 +73,14 @@ public class Main {
                 conjunto = mec;
             }
 
-            List<Integer> indicesUsados = new ArrayList<>();
+            ListaEncadeada<Integer> indicesUsados = new ListaEncadeada<>();
             Random rand = new Random(i * 31); // semente diferente para cada aluno
 
-            while (disciplinasAluno.size() < 15) {
+            while (disciplinasAluno.getTamanho() < 15) {
                 int idx = rand.nextInt(conjunto.length);
-                if (!indicesUsados.contains(idx)) {
-                    disciplinasAluno.add(conjunto[idx]);
-                    indicesUsados.add(idx);
+                if (!indicesUsados.contem(idx)) {
+                    disciplinasAluno.adiciona(conjunto[idx]);
+                    indicesUsados.adiciona(idx);
                 }
             }
 
@@ -92,13 +93,13 @@ public class Main {
         rede.criarRede();
 
         // Verificando alunos e suas disciplinas
-        for(int i = 0; i < rede.getListaAlunos().size(); i++){
-            Aluno aluno = rede.getListaAlunos().get(i);
+        for(int i = 0; i < rede.getListAlunos().getTamanho(); i++){
+            Aluno aluno = rede.getListAlunos().get(i);
             System.out.println("========== " + aluno.getNome() + " ==========");
             System.out.println(aluno);
-            ArrayList<Disciplina> disciplinasAluno = rede.getListaAlunos().get(i).getListaDisciplinas();
+            ListaEncadeada<Disciplina> disciplinasAluno = rede.getListAlunos().get(i).getListaDisciplinas();
 
-            for(int j = 0; j < disciplinasAluno.size(); j++){
+            for(int j = 0; j < disciplinasAluno.getTamanho(); j++){
                 System.out.println(disciplinasAluno.get(j));
             }
         }
@@ -122,17 +123,9 @@ public class Main {
 //        System.out.println("Buscando caminho entre Luna Lovegood e Remus Lupin:");
 //        rede.buscarCaminho("Luna Lovegood", "Remus Lupin");
 
-        Aluno test = rede.getListaAlunos().get(4);
+        Aluno test = rede.getListAlunos().get(4);
 
-//        System.out.println("Amigos de: "+ test.getNome());
-//
-//        ArrayList<Aresta> testList = test.getListaAresta();
-//
-//        for(Aresta a: testList){
-//            System.out.println(a.toString());
-//        }
-
-        ArrayList<Aluno> sugestoes = rede.sugerirAmigo(test.getNome(), 3); //Teste com limite = 3
+        ListaEncadeada<Aluno> sugestoes = rede.sugerirAmigo(test.getNome(), 3); //Teste com limite = 3
 
         if(sugestoes.isEmpty()){
             System.out.println("Nenhuma sugestão encontrada para " + test.getNome() + "!");
@@ -147,10 +140,11 @@ public class Main {
         //Teste Pares de alunos com mais disciplinas
         rede.mostrarParAlunos();
 
-        List<Aluno> listaDeAlunos = rede.getListaAlunos();
-        List<List<Aluno>> comunidades = rede.detectarComunidades(listaDeAlunos);
 
-        for (int i = 0; i < comunidades.size(); i++) {
+        ListaEncadeada<Aluno> listaDeAlunos = rede.getListAlunos();
+        ListaEncadeada<ListaEncadeada<Aluno>> comunidades = rede.detectarComunidades(listaDeAlunos);
+
+        for (int i = 0; i < comunidades.getTamanho(); i++) {
             System.out.println("Comunidade " + (i + 1) + ":");
             for (Aluno a : comunidades.get(i)) {
                 System.out.println("  - " + a.getNome());

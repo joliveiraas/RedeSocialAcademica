@@ -1,36 +1,34 @@
 package rede.model;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import rede.uteis.ListaEncadeada;
 
 public class Aluno {
     private String nome;
     private String matricula;
-    private ArrayList<Disciplina> listaDisciplinas;
-    private ArrayList<Aresta> listaAresta;
+    private ListaEncadeada<Disciplina> listaDisciplinas;
+    private ListaEncadeada<Aresta> listaArestas;
 
     public Aluno(String nome, String matricula){
         this.nome = nome;
         this.matricula = matricula;
-        this.listaDisciplinas = new ArrayList<>();
-        this.setListaAresta(new ArrayList<>());
+        this.setListaDisciplinas(new ListaEncadeada<>());
+        this.setListaArestas(new ListaEncadeada<>());
     }
 
     public void addAresta(Aresta aresta){
-        getListaAresta().add(aresta);
+        getListaArestas().adiciona(aresta);
     }
 
     public Aresta buscaAresta(Aluno amigo){
-        for(int i = 0; i < getListaAresta().size(); i++){
-            if(amigo == getListaAresta().get(i).getAluno1() || amigo == getListaAresta().get(i).getAluno2()){
-                return getListaAresta().get(i);
+        for(int i = 0; i < getListaArestas().getTamanho(); i++){
+            if(amigo == getListaArestas().get(i).getAluno1() || amigo == getListaArestas().get(i).getAluno2()){
+                return getListaArestas().get(i);
             }
         }
         return null;
     }
 
     public void verAmigos(){
-        for(Aresta a: getListaAresta()){
+        for(Aresta a: getListaArestas()){
             if(a.getAluno2().getMatricula() != matricula){
                 System.out.println(a.getAluno2());
             }
@@ -57,25 +55,26 @@ public class Aluno {
         this.matricula = matricula;
     }
 
-    public ArrayList<Disciplina> getListaDisciplinas() {
-        return listaDisciplinas;
-    }
-
-    public void setListaDisciplinas(ArrayList<Disciplina> listaDisciplinas) {
-        this.listaDisciplinas = listaDisciplinas;
-    }
-
     @Override
     public String toString() {
         return getNome() + ", " + getMatricula();
     }
 
-    public ArrayList<Aresta> getListaAresta() {
-        return listaAresta;
+
+    public ListaEncadeada<Disciplina> getListaDisciplinas() {
+        return listaDisciplinas;
     }
 
-    public void setListaAresta(ArrayList<Aresta> listaAresta) {
-        this.listaAresta = listaAresta;
+    public void setListaDisciplinas(ListaEncadeada<Disciplina> listaDisciplinas) {
+        this.listaDisciplinas = listaDisciplinas;
+    }
+
+    public ListaEncadeada<Aresta> getListaArestas() {
+        return listaArestas;
+    }
+
+    public void setListaArestas(ListaEncadeada<Aresta> listaArestas) {
+        this.listaArestas = listaArestas;
     }
 }
 
