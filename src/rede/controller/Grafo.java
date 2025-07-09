@@ -184,55 +184,54 @@ public class Grafo {
         return maisConectado;
     }
 
-    // DFS iterativo com pilha para buscar caminho entre alunos
-    public void buscarCaminho(String origemNome, String destinoNome) {
-        Aluno origem = buscarAlunoNome(origemNome);
-        Aluno destino = buscarAlunoNome(destinoNome);
+    // DFS iterativo para buscar caminho entre alunos
+    public void buscarCaminho(String nomeOrigem, String nomeDestino) {
+        Aluno origem = buscarAlunoNome(nomeOrigem);
+        Aluno destino = buscarAlunoNome(nomeDestino);
 
-        if (origem == null || destino == null){
+        if (origem == null || destino == null) {
+            System.out.println("Origem ou destino não encontrados.");
             return;
         }
 
-        int origemIndex = listAlunos.indexOf(origem);
-        int destinoIndex = listAlunos.indexOf(destino);
+        ListaEncadeada<Aluno> visitados = new ListaEncadeada<>();
+        ListaEncadeada<Aluno> caminho = new ListaEncadeada<>();
 
-        boolean[] visitado = new boolean[listAlunos.getTamanho()];
-        int[] anterior = new int[listAlunos.getTamanho()];
+        boolean encontrado = buscarCaminhoRec(origem, destino, visitados, caminho);
 
-        for (int i = 0; i < anterior.length; i++) {
-            anterior[i] = -1;
+        if (encontrado) {
+            System.out.println("Caminho encontrado:");
+            for (int i = 0; i < caminho.getTamanho(); i++) {
+                System.out.print(caminho.get(i).getNome());
+                if (i < caminho.getTamanho() - 1) {
+                    System.out.print(" -> ");
+                }
+            }
+            System.out.println();
+        } else {
+            System.out.println("Nenhum caminho encontrado entre " + nomeOrigem + " e " + nomeDestino);
+        }
+    }
+
+    private boolean buscarCaminhoRec(Aluno atual, Aluno destino, ListaEncadeada<Aluno> visitados, ListaEncadeada<Aluno> caminho) {
+        visitados.adiciona(atual);
+        caminho.adiciona(atual);
+
+        if (atual.equals(destino)) {
+            return true;
         }
 
-        Stack<Integer> pilha = new Stack<>();
-        pilha.push(origemIndex);
-        visitado[origemIndex] = true;
-
-        while (!pilha.isEmpty()) {
-            int atual = pilha.pop();
-
-            if (atual == destinoIndex) {
-                break;
-            }
-
-            for (int j = 0; j < matrizAdj.length; j++) {
-                if (matrizAdj[atual][j] > 0 && !visitado[j]) {
-                    pilha.push(j);
-                    visitado[j] = true;
-                    anterior[j] = atual;
+        for (Aresta a : atual.getListaArestas()) {
+            Aluno vizinho = a.getAluno2();
+            if (!visitados.contem(vizinho)) {
+                boolean encontrado = buscarCaminhoRec(vizinho, destino, visitados, caminho);
+                if (encontrado) {
+                    return true;
                 }
             }
         }
-
-        if (!visitado[destinoIndex]) {
-            System.out.println("Caminho não encontrado.");
-            return;
-        }
-        ListaEncadeada<String> caminho = new ListaEncadeada<>();
-        for (int i = destinoIndex; i != -1; i = anterior[i]) {
-            caminho.adiciona(0, listAlunos.get(i).getNome());
-        }
-
-        System.out.println("Caminho de " + origemNome + " até " + destinoNome + ": " + String.join(" -> ", caminho));
+        caminho.removeUltimo();
+        return false;
     }
 
     public ListaEncadeada<Aluno>sugerirAmigo(String nome, int limite){

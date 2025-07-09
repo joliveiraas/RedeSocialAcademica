@@ -111,6 +111,22 @@ public class ListaEncadeada<T> implements Iterable<T>{
         return false;
     }
 
+    public void removeUltimo() {
+        if (ultimo == null) {
+            return;
+        }
+
+        if (primeiro == ultimo) {
+            primeiro = null;
+            ultimo = null;
+        } else {
+            ultimo = ultimo.ant;
+            ultimo.prox = null;
+        }
+        tamanho--;
+    }
+
+
     public T get(int index) {
         if (index < 0 || index >= tamanho) {
             throw new IndexOutOfBoundsException("Índice fora dos limites: " + index);

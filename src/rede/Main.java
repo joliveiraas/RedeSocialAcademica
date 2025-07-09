@@ -120,8 +120,11 @@ public class Main {
         System.out.println("Buscando caminho entre Luna Lovegood e Ron Weasley:");
         rede.buscarCaminho("Luna Lovegood", "Ron Weasley");
 //
-//        System.out.println("Buscando caminho entre Luna Lovegood e Remus Lupin:");
-//        rede.buscarCaminho("Luna Lovegood", "Remus Lupin");
+        System.out.println("Buscando caminho entre Luna Lovegood e Remus Lupin:");
+        rede.buscarCaminho("Luna Lovegood", "Remus Lupin");
+
+        System.out.println("Buscando caminho entre Luna Lovegood e Harry Potter:");
+        rede.buscarCaminho("Luna Lovegood", "Harry Potter");
 
         Aluno test = rede.getListAlunos().get(4);
 
