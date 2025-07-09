@@ -2,11 +2,11 @@ package rede.view;
 
 import rede.controller.Grafo;
 import rede.model.Aluno;
+import rede.uteis.ListaEncadeada;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class RedeView extends JPanel {
     private Grafo grafo;
@@ -19,14 +19,14 @@ public class RedeView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (grafo == null || grafo.getListaAlunos().isEmpty()) return;
+        if (grafo == null || grafo.getListAlunos().isEmpty()) return;
 
-        int n = grafo.getListaAlunos().size();
+        int n = grafo.getListAlunos().getTamanho();
         Point[] positions = new Point[n];
-        ArrayList<Aluno> alunos = grafo.getListaAlunos();
+        ListaEncadeada<Aluno> alunos = grafo.getListAlunos();
 
         // Detecta comunidades com base em disciplinas
-        List<List<Aluno>> comunidades = grafo.detectarComunidades(alunos);
+        ListaEncadeada<ListaEncadeada<Aluno>> comunidades = grafo.detectarComunidades(alunos);
 
         // Define posições circulares para cada comunidade
         int centerX = getWidth() / 2;
@@ -34,19 +34,19 @@ public class RedeView extends JPanel {
         int clusterSpacing = 200;
         int clusterRadius = 100;
 
-        for (int c = 0; c < comunidades.size(); c++) {
-            List<Aluno> grupo = comunidades.get(c);
+        for (int c = 0; c < comunidades.getTamanho(); c++) {
+            ListaEncadeada<Aluno> grupo = comunidades.get(c);
 
             // Define centro de cada cluster ao redor do centro
-            double angle = 2 * Math.PI * c / comunidades.size();
+            double angle = 2 * Math.PI * c / comunidades.getTamanho();
             int cx = centerX + (int)(clusterSpacing * Math.cos(angle));
             int cy = centerY + (int)(clusterSpacing * Math.sin(angle));
 
-            for (int i = 0; i < grupo.size(); i++) {
+            for (int i = 0; i < grupo.getTamanho(); i++) {
                 Aluno aluno = grupo.get(i);
                 int idx = alunos.indexOf(aluno);
 
-                double theta = 2 * Math.PI * i / grupo.size();
+                double theta = 2 * Math.PI * i / grupo.getTamanho();
                 int x = cx + (int)(clusterRadius * Math.cos(theta));
                 int y = cy + (int)(clusterRadius * Math.sin(theta));
                 positions[idx] = new Point(x, y);
@@ -100,14 +100,14 @@ public class RedeView extends JPanel {
     }
 
     // Comunidade do aluno para escolher cor
-    private int comunidadeDoAluno(List<List<Aluno>> comunidades, int alunoIndex, List<Aluno> todosAlunos) {
+    private int comunidadeDoAluno(ListaEncadeada<ListaEncadeada<Aluno>> comunidades, int alunoIndex, ListaEncadeada<Aluno> todosAlunos) {
         Aluno aluno = todosAlunos.get(alunoIndex);
-        for (int i = 0; i < comunidades.size(); i++) {
-            if (comunidades.get(i).contains(aluno)) {
+        for (int i = 0; i < comunidades.getTamanho(); i++) {
+            if (comunidades.get(i).contem(aluno)) {
                 return i;
             }
         }
-        return comunidades.size();
+        return comunidades.getTamanho();
     }
 
     public static void showGraph(Grafo grafo) {

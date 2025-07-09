@@ -2,36 +2,37 @@ package rede.controller;
 import rede.model.Aluno;
 import rede.model.Aresta;
 import rede.model.Disciplina;
+import rede.uteis.ListaEncadeada;
 
 import java.util.*;
 
 
 public class Grafo {
-    private ArrayList<Aluno> listaAlunos;
+    private ListaEncadeada<Aluno> listAlunos;
     private int[][] matrizAdj;
 
     public Grafo() {
-        this.listaAlunos = new ArrayList<>();
+        this.setListAlunos(new ListaEncadeada<>());
         this.matrizAdj = new int[0][0];
     }
 
     public void addAluno(String nome, String matricula){
         Aluno novoAluno = new Aluno(nome, matricula);
-        getListaAlunos().add(novoAluno);
+        getListAlunos().adiciona(novoAluno);
         redimensionarMatriz();
     }
 
     public void addDisciplina(String matricula, String nomeDisciplina, String codigo) {
         Disciplina novaDisciplina = new Disciplina(nomeDisciplina, codigo);
-        for (Aluno a : getListaAlunos()) {
+        for (Aluno a : getListAlunos()) {
             if (a.getMatricula().equals(matricula)) {
-                a.getListaDisciplinas().add(novaDisciplina);
+                a.getListaDisciplinas().adiciona(novaDisciplina);
             }
         }
     }
 
     public Aluno buscarAlunoMatricula(String matricula) {
-        for (Aluno a : getListaAlunos()) {
+        for (Aluno a : getListAlunos()) {
             if (a.getMatricula().equals(matricula)) {
                 return a;
             }
@@ -41,7 +42,7 @@ public class Grafo {
     }
 
     public Aluno buscarAlunoNome(String nome) {
-        for (Aluno a : getListaAlunos()) {
+        for (Aluno a : getListAlunos()) {
             if (a.getNome().equalsIgnoreCase(nome)) {
                 return a;
             }
@@ -51,7 +52,7 @@ public class Grafo {
     }
 
     private void redimensionarMatriz() {
-        int tamanho = getListaAlunos().size();
+        int tamanho = getListAlunos().getTamanho();
         int[][] novaMatriz = new int[tamanho][tamanho];
 
         for (int i = 0; i < tamanho - 1; i++) {
@@ -64,10 +65,10 @@ public class Grafo {
 
     public void criarRede() { //Deve ser criada a partir de disciplinas iguais logo vai ser automatico
 
-        for (int i = 0; i < getListaAlunos().size(); i++) {
-            for (int j = i + 1; j < getListaAlunos().size(); j++) {
-                Aluno a1 = getListaAlunos().get(i);
-                Aluno a2 = getListaAlunos().get(j);
+        for (int i = 0; i < getListAlunos().getTamanho(); i++) {
+            for (int j = i + 1; j < getListAlunos().getTamanho(); j++) {
+                Aluno a1 = getListAlunos().get(i);
+                Aluno a2 = getListAlunos().get(j);
                 int peso = contarDisciplinas(a1, a2);
                 getMatrizAdj()[i][j] = peso;
                 getMatrizAdj()[j][i] = peso; //N direcionado
@@ -77,26 +78,26 @@ public class Grafo {
     }
 
     public void criarArestas(){
-        int n = getListaAlunos().size();
+        int n = getListAlunos().getTamanho();
 
         for(int i = 0; i < n; i++){
             for(int j = i+1; j < n; j++){
                 int peso = getMatrizAdj()[i][j];
                 if(peso > 0 ){
 
-                    Aresta a = getListaAlunos().get(i).buscaAresta(getListaAlunos().get(j));
+                    Aresta a = getListAlunos().get(i).buscaAresta(getListAlunos().get(j));
 
                     if(a == null){
-                        Aluno origem = getListaAlunos().get(i);
-                        Aluno destino = getListaAlunos().get(j);
+                        Aluno origem = getListAlunos().get(i);
+                        Aluno destino = getListAlunos().get(j);
                         Aresta a1 = new Aresta(origem, destino, peso);
                         Aresta a2 = new Aresta(destino, origem, peso);
                         origem.addAresta(a1);
                         destino.addAresta(a2);
                     }
                     else{
-                        Aresta a1 = getListaAlunos().get(i).buscaAresta(getListaAlunos().get(j));
-                        Aresta a2 = getListaAlunos().get(j).buscaAresta(getListaAlunos().get(i));
+                        Aresta a1 = getListAlunos().get(i).buscaAresta(getListAlunos().get(j));
+                        Aresta a2 = getListAlunos().get(j).buscaAresta(getListAlunos().get(i));
                         a1.setPeso(peso);
                         a2.setPeso(peso);
                     }
@@ -122,13 +123,13 @@ public class Grafo {
     public void imprimirMatriz() {
         System.out.println("Matriz de adjacência");
         System.out.print("     ");
-        for (Aluno a : getListaAlunos()) {
+        for (Aluno a : getListAlunos()) {
             System.out.print(a.getNome() + " - ");
         }
         System.out.println();
-        for (int i = 0; i < getListaAlunos().size(); i++) {
-            System.out.print(getListaAlunos().get(i).getNome() + " | ");
-            for (int j = 0; j < getListaAlunos().size(); j++) {
+        for (int i = 0; i < getListAlunos().getTamanho(); i++) {
+            System.out.print(getListAlunos().get(i).getNome() + " | ");
+            for (int j = 0; j < getListAlunos().getTamanho(); j++) {
                 System.out.print(getMatrizAdj()[i][j] + "    ");
             }
             System.out.println();
@@ -137,7 +138,7 @@ public class Grafo {
 
     public int grauAluno(String nome){
         Aluno aluno = buscarAlunoNome(nome);
-        int i = listaAlunos.indexOf(aluno);
+        int i = listAlunos.indexOf(aluno);
         int grau = 0;
 
         if(aluno == null){
@@ -152,13 +153,13 @@ public class Grafo {
         return grau;
     }
 
-    public ArrayList<Aluno> alunoMaisConectado(){
+    public ListaEncadeada<Aluno> alunoMaisConectado(){
         int max = -1;
-        ArrayList<Aluno> maisConectado = new ArrayList<>();
+        ListaEncadeada<Aluno> maisConectado = new ListaEncadeada<>();
 
-        for (Aluno a : listaAlunos) {
+        for (Aluno a : listAlunos) {
             int grau = 0;
-            int index = listaAlunos.indexOf(a);
+            int index = listAlunos.indexOf(a);
 
             for (int j = 0; j < matrizAdj.length; j++) {
                 if (matrizAdj[index][j] > 0){
@@ -169,9 +170,9 @@ public class Grafo {
             if (grau > max) {
                 max = grau;
                 maisConectado.clear();
-                maisConectado.add(a);
+                maisConectado.adiciona(a);
             } else if (grau == max) {
-                maisConectado.add(a);
+                maisConectado.adiciona(a);
             }
         }
 
@@ -192,11 +193,11 @@ public class Grafo {
             return;
         }
 
-        int origemIndex = listaAlunos.indexOf(origem);
-        int destinoIndex = listaAlunos.indexOf(destino);
+        int origemIndex = listAlunos.indexOf(origem);
+        int destinoIndex = listAlunos.indexOf(destino);
 
-        boolean[] visitado = new boolean[listaAlunos.size()];
-        int[] anterior = new int[listaAlunos.size()];
+        boolean[] visitado = new boolean[listAlunos.getTamanho()];
+        int[] anterior = new int[listAlunos.getTamanho()];
 
         for (int i = 0; i < anterior.length; i++) {
             anterior[i] = -1;
@@ -226,32 +227,32 @@ public class Grafo {
             System.out.println("Caminho não encontrado.");
             return;
         }
-        ArrayList<String> caminho = new ArrayList<>();
+        ListaEncadeada<String> caminho = new ListaEncadeada<>();
         for (int i = destinoIndex; i != -1; i = anterior[i]) {
-            caminho.add(0, listaAlunos.get(i).getNome());
+            caminho.adiciona(0, listAlunos.get(i).getNome());
         }
 
         System.out.println("Caminho de " + origemNome + " até " + destinoNome + ": " + String.join(" -> ", caminho));
     }
 
-    public ArrayList<Aluno> sugerirAmigo(String nome, int limite){
-        ArrayList<Aluno> sugestoes = new ArrayList<>();
-        Set<Aluno> jaSugeridos = new HashSet<>();
+    public ListaEncadeada<Aluno>sugerirAmigo(String nome, int limite){
+        ListaEncadeada<Aluno> sugestoes = new ListaEncadeada<>();
+        ListaEncadeada<Aluno> jaSugeridos = new ListaEncadeada<>();
 
         Aluno aluno = buscarAlunoNome(nome);
         if(aluno != null){ //Existe esse aluno
-            ArrayList<Aresta> melhoresAmigos = alunoMaiorPeso(aluno); //Lista de Melhores amigos, pode ser que tenha dois com o mesmo peso
+            ListaEncadeada<Aresta> melhoresAmigos = alunoMaiorPeso(aluno); //Lista de Melhores amigos, pode ser que tenha dois com o mesmo peso
 
             for(Aresta aresta1: melhoresAmigos){
                 Aluno melhorAmigo = aresta1.getAluno2();
-                ArrayList<Aresta> amigoDoAmigo = melhorAmigo.getListaAresta();
+                ListaEncadeada<Aresta> amigoDoAmigo = melhorAmigo.getListaArestas();
                 for(Aresta aresta2: amigoDoAmigo){
                     Aluno candidato = aresta2.getAluno2();
-                    if(!candidato.equals(aluno) && !estaConectado(aluno, candidato) && !jaSugeridos.contains(candidato)){
-                        sugestoes.add(candidato);
-                        jaSugeridos.add(candidato);
+                    if(!candidato.equals(aluno) && !estaConectado(aluno, candidato) && !jaSugeridos.contem(candidato)){
+                        sugestoes.adiciona(candidato);
+                        jaSugeridos.addIfNotExists(candidato);
 
-                        if(sugestoes.size() == limite){
+                        if(sugestoes.getTamanho() == limite){
                             return sugestoes;
                         }
                     }
@@ -261,9 +262,9 @@ public class Grafo {
         return sugestoes;
     }
 
-    public ArrayList<Aresta> alunoMaiorPeso(Aluno aluno){
-        ArrayList<Aresta> arestas = aluno.getListaAresta();
-        ArrayList<Aresta> maiores = new ArrayList<>();
+    public ListaEncadeada<Aresta> alunoMaiorPeso(Aluno aluno){
+        ListaEncadeada<Aresta> arestas = aluno.getListaArestas();
+        ListaEncadeada<Aresta> maiores = new ListaEncadeada<>();
 
         if(arestas.isEmpty()){
             return null;
@@ -275,16 +276,16 @@ public class Grafo {
             if(a.getPeso() > maiorPeso){
                 maiorPeso = a.getPeso();
                 maiores.clear();
-                maiores.add(a);
+                maiores.adiciona(a);
             } else if(a.getPeso() == maiorPeso){
-                maiores.add(a);
+                maiores.adiciona(a);
             }
         }
         return maiores;
     }
 
     private boolean estaConectado(Aluno aluno1, Aluno aluno2){
-        for(Aresta a: aluno1.getListaAresta()){
+        for(Aresta a: aluno1.getListaArestas()){
             if(a.getAluno2().equals(aluno2)){
                 return true;
             }
@@ -294,19 +295,19 @@ public class Grafo {
 
     public void mostrarParAlunos(){
 
-        ArrayList<String> pares = new ArrayList<>();
+        ListaEncadeada<String> pares = new ListaEncadeada<>();
         int maiorPeso = -1;
 
-        for (int i = 0; i < getListaAlunos().size(); i++) {
-            for (int j = i + 1; j < getListaAlunos().size(); j++) {
+        for (int i = 0; i < getListAlunos().getTamanho(); i++) {
+            for (int j = i + 1; j < getListAlunos().getTamanho(); j++) {
                 int peso = getMatrizAdj()[i][j];
 
                 if(peso > maiorPeso){
                     maiorPeso = peso;
                     pares.clear();
-                    pares.add(getListaAlunos().get(i).getNome() + " <-> " + getListaAlunos().get(j).getNome());
+                    pares.adiciona(getListAlunos().get(i).getNome() + " <-> " + getListAlunos().get(j).getNome());
                 } else if(peso == maiorPeso){
-                    pares.add(getListaAlunos().get(i).getNome() + " <-> " + getListaAlunos().get(j).getNome());
+                    pares.adiciona(getListAlunos().get(i).getNome() + " <-> " + getListAlunos().get(j).getNome());
                 }
             }
         }
@@ -322,45 +323,37 @@ public class Grafo {
         }
     }
 
-    public List<List<Aluno>> detectarComunidades(List<Aluno> alunos) {
-        List<List<Aluno>> comunidades = new ArrayList<>();
-        boolean[] visitado = new boolean[alunos.size()];
+    public ListaEncadeada<ListaEncadeada<Aluno>> detectarComunidades(ListaEncadeada<Aluno> alunos) {
+        ListaEncadeada<ListaEncadeada<Aluno>> comunidades = new ListaEncadeada<>();
+        boolean[] visitado = new boolean[alunos.getTamanho()];
 
-        for (int i = 0; i < alunos.size(); i++) {
+        for (int i = 0; i < alunos.getTamanho(); i++) {
             if (visitado[i]) continue;
 
             Aluno a1 = alunos.get(i);
-            List<Aluno> comunidade = new ArrayList<>();
-            comunidade.add(a1);
+            ListaEncadeada<Aluno> comunidade = new ListaEncadeada<>();
+            comunidade.adiciona(a1);
             visitado[i] = true;
 
-            for (int j = i + 1; j < alunos.size(); j++) {
+            for (int j = i + 1; j < alunos.getTamanho(); j++) {
                 if (visitado[j]) continue;
 
                 Aluno a2 = alunos.get(j);
                 int disciplinasEmComum = contarDisciplinas(a1, a2);
 
                 if (disciplinasEmComum >= 6) {
-                    comunidade.add(a2);
+                    comunidade.adiciona(a2);
                     visitado[j] = true;
                 }
             }
 
             // Só adiciona se tiver pelo menos 2 membros
-            if (comunidade.size() >= 2) {
-                comunidades.add(comunidade);
+            if (comunidade.getTamanho() >= 2) {
+                comunidades.adiciona(comunidade);
             }
         }
 
         return comunidades;
-    }
-
-    public ArrayList<Aluno> getListaAlunos() {
-        return listaAlunos;
-    }
-
-    public void setListaAlunos(ArrayList<Aluno> listaAlunos) {
-        this.listaAlunos = listaAlunos;
     }
 
     public int[][] getMatrizAdj() {
@@ -371,4 +364,11 @@ public class Grafo {
         this.matrizAdj = matrizAdj;
     }
 
+    public ListaEncadeada<Aluno> getListAlunos() {
+        return listAlunos;
+    }
+
+    public void setListAlunos(ListaEncadeada<Aluno> listAlunos) {
+        this.listAlunos = listAlunos;
+    }
 }
