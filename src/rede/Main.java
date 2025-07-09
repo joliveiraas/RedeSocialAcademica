@@ -113,10 +113,11 @@ public class Main {
         RedeView.showGraph(rede);
 
 //  -------------------------------------------------- TESTES ----------------------------------------------------------
-//        rede.grauAluno("Dobby");
-//        rede.grauAluno("Harry Potter");
-//        rede.alunoMaisConectado();
-//        System.out.println();
+        rede.grauAluno("Dobby");
+        System.out.println("Grau do aluno Harry Potter:");
+        rede.grauAluno("Harry Potter");
+        rede.alunoMaisConectado();
+        System.out.println();
         System.out.println("Buscando caminho entre Luna Lovegood e Ron Weasley:");
         rede.buscarCaminho("Luna Lovegood", "Ron Weasley");
 //

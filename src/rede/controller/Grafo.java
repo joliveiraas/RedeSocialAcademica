@@ -177,9 +177,9 @@ public class Grafo {
         }
 
         System.out.println("Maior grau: " + max);
-        System.out.println("====== Aluno mais conectado ====== ");
+        System.out.println("====== Aluno mais conectado ======");
         for (Aluno aluno : maisConectado) {
-            System.out.println(aluno.getNome());
+            System.out.println(aluno.getNome() + " " + grauAluno(aluno.getNome()));
         }
         return maisConectado;
     }
