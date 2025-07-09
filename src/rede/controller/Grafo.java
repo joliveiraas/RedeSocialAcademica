@@ -184,7 +184,7 @@ public class Grafo {
         return maisConectado;
     }
 
-    // DFS iterativo para buscar caminho entre alunos
+    // DFS recursivo para buscar caminho entre alunos
     public void buscarCaminho(String nomeOrigem, String nomeDestino) {
         Aluno origem = buscarAlunoNome(nomeOrigem);
         Aluno destino = buscarAlunoNome(nomeDestino);
