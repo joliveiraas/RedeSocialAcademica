@@ -18,9 +18,9 @@ public class Aluno {
         getListaArestas().adiciona(aresta);
     }
 
-    public Aresta buscaAresta(Aluno amigo){
+    public Aresta buscaAresta(Aluno busca){
         for(int i = 0; i < getListaArestas().getTamanho(); i++){
-            if(amigo == getListaArestas().get(i).getAluno1() || amigo == getListaArestas().get(i).getAluno2()){
+            if(busca == getListaArestas().get(i).getAluno2()){
                 return getListaArestas().get(i);
             }
         }
@@ -29,12 +29,7 @@ public class Aluno {
 
     public void verAmigos(){
         for(Aresta a: getListaArestas()){
-            if(a.getAluno2().getMatricula() != matricula){
-                System.out.println(a.getAluno2());
-            }
-            else{
-                System.out.println(a.getAluno1());
-            }
+            System.out.println(a.getAluno2());
         }
     }
 

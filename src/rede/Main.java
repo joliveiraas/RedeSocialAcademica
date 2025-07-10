@@ -46,7 +46,7 @@ public class Main {
                 int idx = rand.nextInt(bcet.length);
                 Disciplina d = bcet[idx];
                 if(!aluno.getListaDisciplinas().contem(d)){
-                    rede.addDisciplina(aluno.getMatricula(), aluno.getNome(), d.getCodigo());
+                    rede.addDisciplina(aluno.getMatricula(), d.getNome(), d.getCodigo());
                 }
             }
         }
@@ -107,19 +107,30 @@ public class Main {
         }
 
         // Adiciona um aluno novo, com apenas 1 disciplina
-        Aluno teste = new Aluno("Joana","xxxxxx");
+        Aluno teste = new Aluno("NovoAluno","xxxxxx");
         rede.addAluno(teste.getNome(), teste.getMatricula());
         rede.addDisciplina(teste.getMatricula(), bcet[1].getNome(), bcet[1].getCodigo());
 
         rede.criarRede();
-        //RedeView.showGraph(rede);
+        RedeView.showGraph(rede);
 
 //  -------------------------------------------------- TESTES ----------------------------------------------------------
-        rede.grauAluno("Dobby");
-        System.out.println("Grau do aluno Harry Potter:");
-        rede.grauAluno("Harry Potter");
-        rede.alunoMaisConectado();
-        System.out.println();
+        System.out.println("======================== RELATÓRIO ===================================");
+        System.out.println("======================== GRAU DO ALUNO ===============================");
+        Aluno harry = rede.getListAlunos().get(0);
+        System.out.println("Aluno: " + harry + ", " + rede.grauAluno(harry.getNome()) + " conexões");
+        harry.verAmigos();
+        System.out.println("======================= ALUNO MAIS CONECTADO =========================");
+        ListaEncadeada<Aluno> maisConectados = rede.alunoMaisConectado();
+        System.out.println("Aluno(s) mais conectado(s) ===========================================");
+        for (Aluno aluno : maisConectados) {
+            System.out.println(aluno + ", " + rede.grauAluno(aluno.getNome()) + " conexões");
+        }
+        System.out.println("=========================== PAR DE ALUNOS ============================");
+        System.out.println(rede.mostrarParAlunos());
+        System.out.println(" ");
+
+        System.out.println("=========================== CAMINHO ENTRE ALUNOS ============================");
         System.out.println("Buscando caminho entre Luna Lovegood e Ron Weasley:");
         rede.buscarCaminho("Luna Lovegood", "Ron Weasley");
 //
@@ -129,6 +140,7 @@ public class Main {
         System.out.println("Buscando caminho entre Luna Lovegood e Harry Potter:");
         rede.buscarCaminho("Luna Lovegood", "Harry Potter");
 
+        System.out.println("=========================== SUGERIR AMIGO ============================");
         Aluno test = rede.getListAlunos().get(4);
 
         ListaEncadeada<Aluno> sugestoes = rede.sugerirAmigo(test.getNome(), 3); //Teste com limite = 3
@@ -142,11 +154,7 @@ public class Main {
                 }
             }
         }
-        System.out.println("=======================================================");
-        //Teste Pares de alunos com mais disciplinas
-        String s = rede.mostrarParAlunos();
-        System.out.println(s);
-
+        System.out.println("=========================== COMUNIDADES ============================");
         ListaEncadeada<Aluno> listaDeAlunos = rede.getListAlunos();
         ListaEncadeada<ListaEncadeada<Aluno>> comunidades = rede.detectarComunidades(listaDeAlunos);
 

@@ -150,7 +150,7 @@ public class Grafo {
                 grau++;
             }
         }
-        System.out.println("Aluno "+ nome + ": " + grau + " conexões");
+        //System.out.println("Aluno "+ nome + ": " + grau + " conexões");
         return grau;
     }
 
@@ -176,12 +176,7 @@ public class Grafo {
                 maisConectado.adiciona(a);
             }
         }
-
         System.out.println("Maior grau: " + max);
-        System.out.println("====== Aluno mais conectado ======");
-        for (Aluno aluno : maisConectado) {
-            System.out.println(aluno.getNome() + " " + grauAluno(aluno.getNome()));
-        }
         return maisConectado;
     }
 
