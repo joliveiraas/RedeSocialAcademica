@@ -112,7 +112,7 @@ public class Main {
         rede.addDisciplina(teste.getMatricula(), bcet[1].getNome(), bcet[1].getCodigo());
 
         rede.criarRede();
-        RedeView.showGraph(rede);
+        //RedeView.showGraph(rede);
 
 //  -------------------------------------------------- TESTES ----------------------------------------------------------
         System.out.println("======================== RELATÓRIO ===================================");
@@ -133,7 +133,7 @@ public class Main {
         System.out.println("=========================== CAMINHO ENTRE ALUNOS ============================");
         System.out.println("Buscando caminho entre Luna Lovegood e Ron Weasley:");
         rede.buscarCaminho("Luna Lovegood", "Ron Weasley");
-//
+
         System.out.println("Buscando caminho entre Luna Lovegood e Remus Lupin:");
         rede.buscarCaminho("Luna Lovegood", "Remus Lupin");
 

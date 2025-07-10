@@ -9,10 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MainView extends JFrame{
     private Grafo grafo;
@@ -54,6 +52,7 @@ public class MainView extends JFrame{
                     grafo.addDisciplina(matricula, disciplinasSelecionadas.get(i).getNome(), disciplinasSelecionadas.get(i).getCodigo());
                 }
                 painelDisciplinas.removeAll();
+                matriculaTextField.setText("");
                 JOptionPane.showMessageDialog(null, "Disciplinas atribuídas com sucesso para " + aluno.getNome());
             }
         });
@@ -227,6 +226,12 @@ public class MainView extends JFrame{
                 textFieldOutros.setVisible("Outros".equals(selecionado));
             }
         });
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/rede2.png"));
+        Image img = icon.getImage().getScaledInstance(800, 600, Image.SCALE_SMOOTH);
+        labelImg.setIcon(new ImageIcon(img));
+        labelImg.setHorizontalAlignment(SwingConstants.CENTER);
+        labelImg.setVerticalAlignment(SwingConstants.CENTER);
+
     }
 
     private void atualizarPainelDisciplinas(String cursoSelecionado) {
@@ -258,7 +263,7 @@ public class MainView extends JFrame{
 
     private JPanel btnCadastrarAluno;
     private JTabbedPane tabbedPane1;
-    private JPanel JLabel;
+    private JPanel JLabelImg;
     private JTextField NomeAlunoTextField;
     private JButton GrafoViewButton;
     private JComboBox comboCursos;
@@ -285,6 +290,7 @@ public class MainView extends JFrame{
     private JTextArea textAreaBuscarCaminhos;
     private JTextArea textAreaSugestao;
     private JTextField textFieldOutros;
+    private JLabel labelImg;
 
 
     private Map<String, Disciplina[]> disciplinasPorCurso = new HashMap<>();
