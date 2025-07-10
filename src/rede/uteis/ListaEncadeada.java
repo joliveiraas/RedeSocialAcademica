@@ -158,7 +158,7 @@ public class ListaEncadeada<T> implements Iterable<T>{
         if (contem(elemento)) {
             return; // não adiciona duplicado
         }
-        adiciona(elemento); // usa o método normal de adicionar
+        adiciona(elemento);
     }
 
     public int indexOf(T elemento) {
