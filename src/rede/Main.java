@@ -10,6 +10,21 @@ import rede.view.RedeView;
 import javax.swing.*;
 import java.util.*;
 
+/** Universidade Federal do Recôncavo da Bahia – UFRB
+ * Centro de Ciências Exatas e Tecnológicas
+ * Bacharelado em Ciências Exatas e Tecnológicas
+ * Disciplina: Estrutura de Dados
+ *
+ * Projeto: Rede Social Acadêmica
+ *
+ * Alunos:
+ * - Joana Oliveira
+ * - João Pedro Santiago
+ * - Nataly Barbosa
+ *
+ * Professor e Orientador: Tiago Pagano
+ */
+
 public class Main {
     public static void main(String[] args) {
 
@@ -42,10 +57,10 @@ public class Main {
             rede.addAluno(aluno.getNome(), aluno.getMatricula());
             Random rand = new Random(i * 31); // semente diferente para cada aluno
 
-            while(rede.getListAlunos().get(i).getListaDisciplinas().getTamanho() < 5){
+            while (rede.getListAlunos().get(i).getListaDisciplinas().getTamanho() < 5) {
                 int idx = rand.nextInt(bcet.length);
                 Disciplina d = bcet[idx];
-                if(!aluno.getListaDisciplinas().contem(d)){
+                if (!aluno.getListaDisciplinas().contem(d)) {
                     rede.addDisciplina(aluno.getMatricula(), aluno.getNome(), d.getCodigo());
                 }
             }
@@ -95,58 +110,67 @@ public class Main {
         rede.criarRede();
 
         // Verificando alunos e suas disciplinas
-        for(int i = 0; i < rede.getListAlunos().getTamanho(); i++){
+        for (int i = 0; i < rede.getListAlunos().getTamanho(); i++) {
             Aluno aluno = rede.getListAlunos().get(i);
             System.out.println("========== " + aluno.getNome() + " ==========");
             System.out.println(aluno);
             ListaEncadeada<Disciplina> disciplinasAluno = rede.getListAlunos().get(i).getListaDisciplinas();
 
-            for(int j = 0; j < disciplinasAluno.getTamanho(); j++){
+            for (int j = 0; j < disciplinasAluno.getTamanho(); j++) {
                 System.out.println(disciplinasAluno.get(j));
             }
         }
 
         // Adiciona um aluno novo, com apenas 1 disciplina
-        Aluno teste = new Aluno("Joana","xxxxxx");
+        Aluno teste = new Aluno("Joana", "xxxxxx");
         rede.addAluno(teste.getNome(), teste.getMatricula());
         rede.addDisciplina(teste.getMatricula(), bcet[1].getNome(), bcet[1].getCodigo());
 
         rede.criarRede();
         //RedeView.showGraph(rede);
 
-//  -------------------------------------------------- TESTES ----------------------------------------------------------
+//  // -------------------------------------------------- TESTES ----------------------------------------------------------
+//
+        System.out.println("Grau do aluno Dobby:");
         rede.grauAluno("Dobby");
+
         System.out.println("Grau do aluno Harry Potter:");
         rede.grauAluno("Harry Potter");
+
         rede.alunoMaisConectado();
+
         System.out.println();
+
         System.out.println("Buscando caminho entre Luna Lovegood e Ron Weasley:");
         rede.buscarCaminho("Luna Lovegood", "Ron Weasley");
-//
+
         System.out.println("Buscando caminho entre Luna Lovegood e Remus Lupin:");
         rede.buscarCaminho("Luna Lovegood", "Remus Lupin");
 
         System.out.println("Buscando caminho entre Luna Lovegood e Harry Potter:");
         rede.buscarCaminho("Luna Lovegood", "Harry Potter");
 
+//Sugestão de amigos para um aluno específico
         Aluno test = rede.getListAlunos().get(4);
+        ListaEncadeada<Aluno> sugestoes = rede.sugerirAmigo(test.getNome(), 3);
+        //Limite = 3
 
-        ListaEncadeada<Aluno> sugestoes = rede.sugerirAmigo(test.getNome(), 3); //Teste com limite = 3
-
-        if(sugestoes.isEmpty()){
+        if (sugestoes.isEmpty()) {
             System.out.println("Nenhuma sugestão encontrada para " + test.getNome() + "!");
-        } else{
-            System.out.println("Sugestões de amigos para " + test.getNome() + ": ");{
-                for(Aluno sugerido : sugestoes){
-                    System.out.println(" -> " + sugerido.getNome());
-                }
+        } else {
+            System.out.println("Sugestões de amigos para " + test.getNome() + ":");
+            for (Aluno sugerido : sugestoes) {
+                System.out.println(" -> " + sugerido.getNome());
             }
         }
+
         System.out.println("=======================================================");
-        //Teste Pares de alunos com mais disciplinas
+
+//Pares de alunos com mais disciplinas em comum
         String s = rede.mostrarParAlunos();
         System.out.println(s);
 
+// Detectar e mostrar comunidades
         ListaEncadeada<Aluno> listaDeAlunos = rede.getListAlunos();
         ListaEncadeada<ListaEncadeada<Aluno>> comunidades = rede.detectarComunidades(listaDeAlunos);
 
@@ -157,7 +181,7 @@ public class Main {
             }
         }
 
+// Iniciar interface gráfica Swing
         SwingUtilities.invokeLater(() -> new MainView(rede).setVisible(true));
-
     }
 }
