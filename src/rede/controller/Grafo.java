@@ -180,23 +180,22 @@ public class Grafo {
         return maisConectado;
     }
 
-    // DFS recursivo para buscar caminho entre alunos
-    public void buscarCaminho(String nomeOrigem, String nomeDestino) {
-        Aluno origem = buscarAlunoNome(nomeOrigem);
-        Aluno destino = buscarAlunoNome(nomeDestino);
-
-        if (origem == null || destino == null) {
-            System.out.println("Origem ou destino não encontrados.");
-            return;
-        }
+    public ListaEncadeada<Aluno> buscarCaminho(String origem, String destino) {
+        Aluno origemAluno = buscarAlunoNome(origem);
+        Aluno destinoAluno = buscarAlunoNome(destino);
 
         ListaEncadeada<Aluno> visitados = new ListaEncadeada<>();
         ListaEncadeada<Aluno> caminho = new ListaEncadeada<>();
 
-        boolean encontrado = buscarCaminhoRec(origem, destino, visitados, caminho);
+        if (origemAluno == null || destinoAluno == null) {
+            System.out.println("Aluno de origem ou destino não encontrado!");
+            return caminho;
+        }
 
-        if (encontrado) {
-            System.out.println("Caminho encontrado:");
+        boolean encontrou = buscarCaminhoRec(origemAluno, destinoAluno, visitados, caminho);
+
+        if (encontrou) {
+            System.out.print("Caminho entre " + origem + " e " + destino + ": ");
             for (int i = 0; i < caminho.getTamanho(); i++) {
                 System.out.print(caminho.get(i).getNome());
                 if (i < caminho.getTamanho() - 1) {
@@ -205,9 +204,12 @@ public class Grafo {
             }
             System.out.println();
         } else {
-            System.out.println("Nenhum caminho encontrado entre " + nomeOrigem + " e " + nomeDestino);
+            System.out.println("Nenhum caminho encontrado entre " + origem + " e " + destino);
         }
+
+        return caminho;
     }
+
 
     private boolean buscarCaminhoRec(Aluno atual, Aluno destino, ListaEncadeada<Aluno> visitados, ListaEncadeada<Aluno> caminho) {
         visitados.adiciona(atual);
