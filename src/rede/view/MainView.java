@@ -9,8 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainView extends JFrame{
     private Grafo grafo;
@@ -146,6 +148,45 @@ public class MainView extends JFrame{
         });
         clearButton.addActionListener(e -> TextRelatorio.setText(" "));
 
+        procurarBuscarCaminhosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String origem = textOrigem.getText().trim();
+                String destino = textDestino.getText().trim();
+                textAreaBuscarCaminhos.setEditable(false);
+                textAreaBuscarCaminhos.setText("");
+
+                if (origem.isEmpty() || destino.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Digite os nomes de origem e destino!");
+                    return;
+                }
+
+                Aluno alunoOrigem = grafo.buscarAlunoNome(origem);
+                Aluno alunoDestino = grafo.buscarAlunoNome(destino);
+
+                if (alunoOrigem == null || alunoDestino == null) {
+                    JOptionPane.showMessageDialog(null, "Aluno de origem ou destino não encontrado!");
+                    return;
+                }
+
+                ListaEncadeada<Aluno> caminho = grafo.buscarCaminho(origem, destino);
+
+                if (caminho.isEmpty()) {
+                    textAreaBuscarCaminhos.append("Nenhum caminho encontrado entre " + origem + " e " + destino + "!");
+                } else {
+                    textAreaBuscarCaminhos.append("Caminho de " + origem + " até " + destino + ":\n");
+                    for (Aluno a : caminho) {
+                        textAreaBuscarCaminhos.append(" -> " + a.getNome() + "\n");
+                    }
+                }
+
+                textOrigem.setText("");
+                textDestino.setText("");
+            }
+        });
+
+
+
         sugerirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -153,7 +194,7 @@ public class MainView extends JFrame{
                 textAreaSugestao.setEditable(false);
                 String nome = NomeSugestao.getText().trim();
 
-                String limite_str = (String) comboBoxLimite.getSelectedItem();
+                String limite_str = (String) comboBoxLimiteSugestoes.getSelectedItem();
                 int limite = Integer.parseInt(limite_str);
 
                 if(nome.isEmpty() || limite_str.isEmpty()){
@@ -179,10 +220,10 @@ public class MainView extends JFrame{
                 NomeSugestao.setText("");
             }
         });
-        comboBoxLimite.addActionListener(new ActionListener() {
+        comboBoxLimiteSugestoes.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selecionado = (String) comboBoxLimite.getSelectedItem();
+                String selecionado = (String) comboBoxLimiteSugestoes.getSelectedItem();
                 textFieldOutros.setVisible("Outros".equals(selecionado));
             }
         });
@@ -237,11 +278,11 @@ public class MainView extends JFrame{
     private JButton clearButton;
     private JTextField textOrigem;
     private JTextField textDestino;
-    private JButton procurarButton;
+    private JButton procurarBuscarCaminhosButton;
     private JTextField NomeSugestao;
-    private JComboBox comboBoxLimite;
+    private JComboBox comboBoxLimiteSugestoes;
     private JButton sugerirButton;
-    private JTextArea textArea1;
+    private JTextArea textAreaBuscarCaminhos;
     private JTextArea textAreaSugestao;
     private JTextField textFieldOutros;
 
