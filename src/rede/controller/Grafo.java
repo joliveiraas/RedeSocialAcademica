@@ -26,9 +26,10 @@ public class Grafo {
         Disciplina novaDisciplina = new Disciplina(nomeDisciplina, codigo);
         for (Aluno a : getListAlunos()) {
             if (a.getMatricula().equals(matricula)) {
-                a.getListaDisciplinas().adiciona(novaDisciplina);
+                a.getListaDisciplinas().addIfNotExists(novaDisciplina); //metodo para adicionar sem duplicatas
             }
         }
+        criarRede();
     }
 
     public Aluno buscarAlunoMatricula(String matricula) {
@@ -292,7 +293,7 @@ public class Grafo {
         return false;
     }
 
-    public void mostrarParAlunos(){
+    public String mostrarParAlunos(){
 
         ListaEncadeada<String> pares = new ListaEncadeada<>();
         int maiorPeso = -1;
@@ -310,16 +311,15 @@ public class Grafo {
                 }
             }
         }
-
+        String resultado = "";
         if(pares.isEmpty()){
             System.out.println("Nenhum par encontrado!");
         } else {
-            System.out.println("Maior número de disciplinas com pares: " + maiorPeso);
-            System.out.println("Pares com essa quantidade de disciplinas: ");
             for(String s : pares){
-                System.out.println("-> " + s);
+                resultado += s + "," + " Disciplinas em comum: "+ maiorPeso +"\n";
             }
         }
+        return resultado;
     }
 
     public ListaEncadeada<ListaEncadeada<Aluno>> detectarComunidades(ListaEncadeada<Aluno> alunos) {

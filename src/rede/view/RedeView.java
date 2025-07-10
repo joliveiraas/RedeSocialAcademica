@@ -111,12 +111,13 @@ public class RedeView extends JPanel {
     }
 
     public static void showGraph(Grafo grafo) {
-        JFrame frame = new JFrame("Rede Social Acadêmica");
+       // JFrame frame = new JFrame("Rede Social Acadêmica");
+        JDialog dialog = new JDialog((Frame)  null, "Rede Social Acadêmica", null);
         RedeView panel = new RedeView(grafo);
-        frame.add(panel);
-        frame.setSize(1366, 768);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        dialog.add(panel);
+        dialog.setSize(1366, 768);
+        dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
     }
 }
 

@@ -4,8 +4,10 @@ import rede.controller.Grafo;
 import rede.model.Aluno;
 import rede.model.Disciplina;
 import rede.uteis.ListaEncadeada;
+import rede.view.MainView;
 import rede.view.RedeView;
 
+import javax.swing.*;
 import java.util.*;
 
 public class Main {
@@ -110,7 +112,7 @@ public class Main {
         rede.addDisciplina(teste.getMatricula(), bcet[1].getNome(), bcet[1].getCodigo());
 
         rede.criarRede();
-        RedeView.showGraph(rede);
+        //RedeView.showGraph(rede);
 
 //  -------------------------------------------------- TESTES ----------------------------------------------------------
         rede.grauAluno("Dobby");
@@ -142,8 +144,8 @@ public class Main {
         }
         System.out.println("=======================================================");
         //Teste Pares de alunos com mais disciplinas
-        rede.mostrarParAlunos();
-
+        String s = rede.mostrarParAlunos();
+        System.out.println(s);
 
         ListaEncadeada<Aluno> listaDeAlunos = rede.getListAlunos();
         ListaEncadeada<ListaEncadeada<Aluno>> comunidades = rede.detectarComunidades(listaDeAlunos);
@@ -155,6 +157,7 @@ public class Main {
             }
         }
 
+        SwingUtilities.invokeLater(() -> new MainView(rede).setVisible(true));
 
     }
 }
