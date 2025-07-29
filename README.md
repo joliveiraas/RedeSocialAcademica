@@ -1,6 +1,6 @@
 # 📚 Grafonória: Rede Social Acadêmica com Grafos
 
-<img width="1343" height="755" alt="image" src="https://github.com/user-attachments/assets/462e68f1-8a0c-4e01-97d5-a0f21e6b4bd1" />
+<img width="1343" height="755" alt="image" src="https://github.com/user-attachments/assets/9f659880-f808-40ef-871e-7618170d7dac" />
 
 Este é um projeto de Estrutura de Dados feito em Java utilizando **grafos** para modelar uma rede social entre alunos. Desenvolvido em grupo como parte da disciplina.
 
