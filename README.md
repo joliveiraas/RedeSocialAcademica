@@ -6,6 +6,9 @@ Este é um projeto de Estrutura de Dados feito em Java utilizando **grafos** par
 
 Como extra, o projeto foi construido unindo o universo de *Harry Potter* e cursos de engenharia: os personagems da saga foram utilizados para representar os alunos (vértices) e seus relacionamentos (arestas) são moldados com base na quantidade de disciplinas que compartilham entre si. As disciplinas disponíveis para cada aluno fazem parte do currículo de componentes profissionalizantes dos cursos de Engenharia da Computação, Engenharia Elétrica, Engenharia Mecânica e Engenharia Civil da Universidade Federal do Recôncavo da Bahia (UFRB), desse modo, existem 4 comunidades principais dentro da rede que um aluno pode fazer parte. 
 
+<img width="1095" height="595" alt="image" src="https://github.com/user-attachments/assets/c1984c1f-b5ca-4208-bacf-041a08fca854" />
+
+
 ## 👩‍💻 Integrantes
 - Joana Oliveira Silva
 - João Pedro Santiago
