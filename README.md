@@ -1,8 +1,10 @@
 # 📚 Grafonória: Rede Social Acadêmica com Grafos
 
-![Logo do projeto](https://example.com/logo.png)
+<img width="1343" height="755" alt="image" src="https://github.com/user-attachments/assets/462e68f1-8a0c-4e01-97d5-a0f21e6b4bd1" />
 
-Este é um projeto de Estrutura de Dados feito em Java utilizando **grafos** para modelar uma rede social entre alunos. Desenvolvido em grupo como parte da disciplina. 
+Este é um projeto de Estrutura de Dados feito em Java utilizando **grafos** para modelar uma rede social entre alunos. Desenvolvido em grupo como parte da disciplina.
+
+Como extra, o projeto foi construido unindo o universo de *Harry Potter* e cursos de engenharia: os personagems da saga foram utilizados para representar os alunos (vértices) e seus relacionamentos (arestas) são moldados com base na quantidade de disciplinas que compartilham entre si. As disciplinas disponíveis para cada aluno fazem parte do currículo de componentes profissionalizantes dos cursos de Engenharia da Computação, Engenharia Elétrica, Engenharia Mecânica e Engenharia Civil da Universidade Federal do Recôncavo da Bahia (UFRB), desse modo, existem 4 comunidades principais dentro da rede que um aluno pode fazer parte. 
 
 ## 👩‍💻 Integrantes
 - Joana Oliveira Silva
